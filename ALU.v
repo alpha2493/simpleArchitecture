@@ -26,58 +26,58 @@ module ALU (
 	 ShiftLeftLogical = ShiftLeftLogical << shift;
       end
    endfunction
-
+   
    function [16:0] ShiftLeftRotate(
-      input [15:0]  in,
-      input [3:0]   shift);
-
-      reg [15:0]    shifted;
-      reg 	    carry;
-      integer 	    i;
+      input [15:0] in,
+      input [3:0]  shift);
+      
+      reg [15:0]   shifted;
+      reg          carry;
+      integer      i;
       
       begin
-	 carry = 0;
-	 if (shift > 0)
-	   carry = in[16 - shift];
-	 shifted = in << shift;
-	 for (i = 0; i < shift; i = i + 1)
-	   shifted[i] = in[16 - shift + i];
-	 ShiftLeftRotate = {carry, shifted};
+         carry = 0;
+         if (shift > 0)
+           carry = in[16 - shift];
+         shifted = in << shift;
+         for (i = 0; i < shift; i = i + 1)
+           shifted[i] = in[16 - shift + i];
+         ShiftLeftRotate = {carry, shifted};
       end
    endfunction
-
+   
    function [16:0] ShiftRightLogical(
-      input [15:0]  in,
-      input [3:0]   shift);
-
-      reg [15:0]    shifted;
-      reg 	    carry;
+      input [15:0] in,
+      input [3:0]  shift);
+      
+      reg [15:0]   shifted;
+      reg          carry;
       
       begin
-	 carry = 0;
-	 if (shift > 0)
-	   carry = in[shift - 1];
-	 shifted = in >> shift;
-	 ShiftRightLogical = {carry, shifted};	 
+         carry = 0;
+         if (shift > 0)
+           carry = in[shift - 1];
+         shifted = in >> shift;
+         ShiftRightLogical = {carry, shifted};	 
       end
    endfunction
-
+   
    function [16:0] ShiftRightArithmatic(
-      input [15:0]  in,
-      input [3:0]   shift);
-
-      reg [15:0]    shifted;
-      reg 	    carry;
-      integer 	    i;
-
+      input [15:0] in,
+      input [3:0]  shift);
+      
+      reg [15:0]   shifted;
+      reg          carry;
+      integer      i;
+      
       begin
-	 carry = 0;
-	 if (shift > 0)
-	   carry = in[shift - 1];
-	 shifted = in >> shift;
-	 for (i = 0; i < shift; i = i + 1)
-	   shifted[15 - i] = in[15];
-	 ShiftRightArithmatic = {carry, shifted};	 
+	       carry = 0;
+	       if (shift > 0)
+	         carry = in[shift - 1];
+	       shifted = in >> shift;
+	       for (i = 0; i < shift; i = i + 1)
+	         shifted[15 - i] = in[15];
+	       ShiftRightArithmatic = {carry, shifted};	 
       end
    endfunction
 
@@ -99,11 +99,11 @@ module ALU (
       S = result[15] == 1;
       if (((S_ALU == IADD) 
            && (DATA_A[15] == DATA_B[15])
-	   && (DATA_A[15] != result[15]))
-	  || ((S_ALU == ISUB)
-	      && (DATA_A[15] != DATA_B[15])
-	      && (DATA_A[15] != result[15])))
-	V = 1;
+	         && (DATA_A[15] != result[15]))
+	        || ((S_ALU == ISUB)
+	            && (DATA_A[15] != DATA_B[15])
+	            && (DATA_A[15] != result[15])))
+	      V = 1;
       else
 	V = 0;
    end // initial begin
