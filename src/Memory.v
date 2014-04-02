@@ -8,7 +8,7 @@ module Memory(
    
    initial begin
       for (i = 0; i < 65536; i = i + 1)
-	      mem[i] = 16'b0000_0000_0000_0000;
+	      mem[i] = 16'b0;
    end
    
    always @ (address) begin
