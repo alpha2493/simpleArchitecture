@@ -11,8 +11,8 @@ module ALUTEST;
       $dumpvars(0, ALUTEST);
       $monitor ("%t: %b, %b -> %b :: %d, %d -> %d (%b)", $time, a, b, aout, a, b, aout, fout);
 
-      $display(" --- IADD ---");
-      salu = 4'b0000; a = 16'd0; b = 16'd0;
+      $display(" --- ISUB ---");
+      salu = 4'b0001; a = 16'd0; b = 16'd0;
       #10 a = 16'd5; b = 16'd8;
       #10 a = 16'd10; b = 16'd20;
       #10 a = 16'd123; b = 16'd234;
