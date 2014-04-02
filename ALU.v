@@ -1,29 +1,29 @@
 module ALU (
    input [15:0]  DATA_A, DATA_B,
-   input [3:0] 	 S_ALU,
+   input [3:0]   S_ALU,
    output [15:0] ALU_OUT,
    output [3:0]  FLAG_OUT);
-
-   integer 	 IADD = 4'b0000;
-   integer 	 ISUB = 4'b0001;
-   integer 	 IAND = 4'b0010;
-   integer 	 IOR  = 4'b0011;
-   integer 	 IXOR = 4'b0100;
-   integer 	 ISLL = 4'b1000;
-   integer 	 ISLR = 4'b1001;
-   integer 	 ISRL = 4'b1010;
-   integer 	 ISRA = 4'b1011;
-
-   reg [16:0] result;
-   reg 	      S,Z,C,V = 0;
+   
+   integer       IADD = 4'b0000;
+   integer       ISUB = 4'b0001;
+   integer       IAND = 4'b0010;
+   integer       IOR  = 4'b0011;
+   integer       IXOR = 4'b0100;
+   integer       ISLL = 4'b1000;
+   integer       ISLR = 4'b1001;
+   integer       ISRL = 4'b1010;
+   integer       ISRA = 4'b1011;
+   
+   reg [16:0]    result;
+   reg           S,Z,C,V = 0;
    
    function [16:0] ShiftLeftLogical(
-      input [15:0]  in,
-      input [3:0]   shift);
-
+      input [15:0] in,
+      input [3:0]  shift);
+      
       begin
-	 ShiftLeftLogical = {1'b0, in};
-	 ShiftLeftLogical = ShiftLeftLogical << shift;
+	       ShiftLeftLogical = {1'b0, in};
+	       ShiftLeftLogical = ShiftLeftLogical << shift;
       end
    endfunction
    
@@ -80,19 +80,19 @@ module ALU (
 	       ShiftRightArithmatic = {carry, shifted};	 
       end
    endfunction
-
+   
    always @ (DATA_A or DATA_B or S_ALU) begin
       case (S_ALU)
-	IADD : result = {1'b0, DATA_A} + {1'b0, DATA_B};
-	ISUB : result = {1'b0, DATA_A} - {1'b0, DATA_B};
-	IAND : result = {1'b0, DATA_A & DATA_B};
-	IOR  : result = {1'b0, DATA_A | DATA_B};
-	IXOR : result = {1'b0, DATA_A ^ DATA_B};
-	ISLL : result = ShiftLeftLogical(DATA_A, DATA_B[3:0]);
-	ISLR : result = ShiftLeftRotate(DATA_A, DATA_B[3:0]);
-	ISRL : result = ShiftRightLogical(DATA_A, DATA_B[3:0]);
-	ISRA : result = ShiftRightArithmatic(DATA_A, DATA_B[3:0]);
-	default : result = 0;
+	      IADD : result = {1'b0, DATA_A} + {1'b0, DATA_B};
+	      ISUB : result = {1'b0, DATA_A} - {1'b0, DATA_B};
+	      IAND : result = {1'b0, DATA_A & DATA_B};
+	      IOR  : result = {1'b0, DATA_A | DATA_B};
+	      IXOR : result = {1'b0, DATA_A ^ DATA_B};
+	      ISLL : result = ShiftLeftLogical(DATA_A, DATA_B[3:0]);
+	      ISLR : result = ShiftLeftRotate(DATA_A, DATA_B[3:0]);
+	      ISRL : result = ShiftRightLogical(DATA_A, DATA_B[3:0]);
+	      ISRA : result = ShiftRightArithmatic(DATA_A, DATA_B[3:0]);
+	      default : result = 0;
       endcase // case S_ALU
       Z = result[15:0] == 0;
       C = result[16];
@@ -105,7 +105,7 @@ module ALU (
 	            && (DATA_A[15] != result[15])))
 	      V = 1;
       else
-	V = 0;
+	      V = 0;
    end // initial begin
    
    assign ALU_OUT = result[15:0];
