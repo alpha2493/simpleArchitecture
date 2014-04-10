@@ -6,7 +6,6 @@ module Register (
    
    reg [15:0]    register [0:7];
    integer       i;
-   reg [15:0]    out1, out2;
    
    initial begin
       for (i = 0; i < 8 ; i = i + 1)
