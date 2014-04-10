@@ -11,7 +11,7 @@ module ProgramCounter (
       else if (load)
 	      count = address;
       else
-	      count = count + 1;
+        count = count + 1;
    end
    
    assign counter = count;
