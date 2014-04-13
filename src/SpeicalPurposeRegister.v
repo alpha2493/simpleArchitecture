@@ -7,6 +7,8 @@
  * スタックポインタ
  * ベースポインタ
  * データレジスタ
+ * 入力レジスタ
+ * 出力レジスタ
  */
 module ZeroRegister (
    input         clock, write, reset,
@@ -34,8 +36,7 @@ module AddressRegister (
    always @ (posedge clock) begin
       if (reset)
         out = 16'b0;
-      
-      if (write)
+      else if (write)
         out = writeData;
    end
 
@@ -60,8 +61,7 @@ module BaseRegister(
       if (reset)
         for (i = 0; i < 65536; i = i + 1)
           base[i] = 16'b0;
-
-      if (write)
+      else if (write)
         base[address] = writeData;
    end
    
@@ -86,8 +86,7 @@ module IndexRegister(
       if (reset)
         for (i = 0; i < 65536; i = i + 1)
           index[i] = 16'b0;
-
-      if (write)
+      else if (write)
         index[address] = writeData;
    end
 
@@ -105,14 +104,14 @@ module StackPointerRegister (
    always @ (posedge clock) begin
       if (reset)
         stackPointer = 16'b0;
-
-      case (op)
-        2'0 : stackPointer = stackPointer + 1;
-        2'1 : stackPointer = stackPointer - 1;
-        2'2 : stackPointer = writeData;
-        2'3 : stackPointer = stackPointer;
-        default : stackPointer = stackPointer;
-      endcase
+      else
+         case (op)
+           2'0 : stackPointer = stackPointer + 1;
+           2'1 : stackPointer = stackPointer - 1;
+           2'2 : stackPointer = writeData;
+           2'3 : stackPointer = stackPointer;
+           default : stackPointer = stackPointer;
+         endcase
    end
 
    assign data = stackPointer;
@@ -128,10 +127,43 @@ module BasePointerRegister (
    always @ (posedge clock) begin
       if (reset)
         basePointer = 16'b0;
-
-      if (write)
+      else if (write)
         basePointer = writeData;
    end
 
    assign data = basePointer;
+endmodule
+
+module InputRegister (
+   input         clock, write, reset,
+   input [15:0]  writeData,
+   output [15:0] data);
+
+   reg [15:0]    out = 16'b0;
+
+   always @ (posedge clock) begin 
+      if (reset)
+         out = 16'b0;
+      else if (write)
+         out = writeData;
+   end
+
+   assign data = out;
+endmodule
+
+module OutputRegister (
+   input         clock, write, reset,
+   input [15:0]  writeData,
+   output [15:0] data);
+
+   reg [15:0]    out = 16'b0;
+
+   always @ (posedge clock) begin 
+      if (reset)
+         out = 16'b0;
+      else if (write)
+         out = writeData;
+   end
+
+   assign data = out;
 endmodule
