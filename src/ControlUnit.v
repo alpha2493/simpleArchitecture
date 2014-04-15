@@ -29,4 +29,13 @@ module ControlUnit(
 	        endcase // case (EXEC[13:11])
       endcase // case (EXEC[15:14])
    end // always @ (posedge CLOCK)
+
+
+   always @ (posedge CLOCK) begin
+      case (EXEC[15:14])
+	2'b11 : ALUselect = EXEC[7:4];
+      endcase // case (EXEC[15:14])
+   end
+   
+   
 endmodule // ControlUnit

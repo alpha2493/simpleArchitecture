@@ -1,8 +1,8 @@
 module ALU (
    input [15:0]  DATA_A, DATA_B,
-   input [3:0]   S_ALU,
-   output [15:0] ALU_OUT,
-   output [3:0]  FLAG_OUT);
+   input [3:0] 	 S_ALU,
+   reg output [15:0] ALU_OUT,
+   reg output [3:0]  FLAG_OUT);
    
    integer       IADD = 4'b0000;
    integer       ISUB = 4'b0001;
@@ -13,6 +13,8 @@ module ALU (
    integer       ISLR = 4'b1001;
    integer       ISRL = 4'b1010;
    integer       ISRA = 4'b1011;
+   integer       INON = 4'b1111;
+	 
    
    reg [16:0]    result;
    reg           S,Z,C,V = 0;
@@ -92,22 +94,25 @@ module ALU (
 	      ISLR : result = ShiftLeftRotate(DATA_A, DATA_B[3:0]);
 	      ISRL : result = ShiftRightLogical(DATA_A, DATA_B[3:0]);
 	      ISRA : result = ShiftRightArithmatic(DATA_A, DATA_B[3:0]);
+	      INON : result = 0;
 	      default : result = 0;
       endcase // case S_ALU
-      Z = result[15:0] == 0;
-      C = result[16];
-      S = result[15] == 1;
-      if (((S_ALU == IADD) 
-           && (DATA_A[15] == DATA_B[15])
-	         && (DATA_A[15] != result[15]))
-	        || ((S_ALU == ISUB)
-	            && (DATA_A[15] != DATA_B[15])
-	            && (DATA_A[15] != result[15])))
-	      V = 1;
-      else
-	      V = 0;
+      if (S_ALU != INON) begin
+	 Z <= result[15:0] == 0;
+	 C <= result[16];
+	 S <= result[15] == 1;
+	 if (((S_ALU == IADD) 
+              && (DATA_A[15] == DATA_B[15])
+	      && (DATA_A[15] != result[15]))
+	     || ((S_ALU == ISUB)
+	         && (DATA_A[15] != DATA_B[15])
+	         && (DATA_A[15] != result[15])))
+	   V = 1;
+	 else
+	   V = 0;
+      end // if (S_ALU != INON)
    end // initial begin
-   
-   assign ALU_OUT = result[15:0];
-   assign FLAG_OUT = {S, Z, C, V};
+
+   ALU_OUT <= result[15:0];
+   FLAG_OUT <= {S, Z, C, V};
 endmodule
