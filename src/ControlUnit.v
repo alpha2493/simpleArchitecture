@@ -77,5 +77,4 @@ module ControlUnit(
    
    assign S_ALU = Select_ALU;
    
-   
 endmodule // ControlUnit
