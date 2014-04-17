@@ -1,5 +1,5 @@
 #Makefile
-all:ALU_test.out Memory_test.out MUX_test.out SignExtension_test.out ControlUnit_Test.out
+all:ALU_test.out Memory_test.out MUX_test.out SignExtension_test.out ControlUnit_test.out
 
 vcd: aluTest.vcd Memory.vcd muxTest.vcd singextensionTest.vcd controlUnitTest.vcd
 
