@@ -1,8 +1,8 @@
 module ALU (
    input [15:0]  DATA_A, DATA_B,
-   input [3:0] 	 S_ALU,
-   reg output [15:0] ALU_OUT,
-   reg output [3:0]  FLAG_OUT);
+   input [3:0]   S_ALU,
+   output [15:0] ALU_OUT,
+   output [3:0]  FLAG_OUT);
    
    integer       IADD = 4'b0000;
    integer       ISUB = 4'b0001;
@@ -113,6 +113,6 @@ module ALU (
       end // if (S_ALU != INON)
    end // initial begin
 
-   ALU_OUT <= result[15:0];
-   FLAG_OUT <= {S, Z, C, V};
+   assign ALU_OUT[15:0] = result[15:0];
+   assign FLAG_OUT = {S, Z, C, V};
 endmodule
