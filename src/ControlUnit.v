@@ -11,9 +11,9 @@ module ControlUnit(
    //各種演算命令
    always @ (posedge CLOCK) begin
       if (EXEC[15:14] == 2'b11)
-	S_ALU = EXEC[7:4]; //ADD, SUB, etc
+	ALUselect = EXEC[7:4]; //ADD, SUB, etc
       else
-	S_ALU = INON;      
+	ALUselect = INON;      
    end
 
 
@@ -44,6 +44,6 @@ module ControlUnit(
 	endcase // case (EXEC[10:8])
    end
    
-   
+   assign S_ALU = ALUselect;
    
 endmodule // ControlUnit
