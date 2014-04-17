@@ -2,8 +2,7 @@ module ControlUnit(
    input        CLOCK,
    input        RESET,
    input [15:0] EXEC,
-   output [3:0] S_ALU,
-   output [2:0] registerAddress1, registerAddress2
+   output [3:0] S_ALU,   
    );
 
    reg [15:0] operands[0:4];
