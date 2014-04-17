@@ -22,6 +22,7 @@ module ControlUnit(
       case (EXEC[15:14])
 	2'b00 : ; //LD
 	2'b01 :	; //ST
+      endcase // case (EXEC[15:14])
    end
    
    always @ (posedge CLOCK) begin
