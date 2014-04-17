@@ -1,8 +1,8 @@
 module ALU (
    input [15:0]  DATA_A, DATA_B,
-   input [3:0] 	 S_ALU,
+   input [3:0]   S_ALU,
    output [15:0] ALU_OUT,
-	output [3:0]  FLAG_OUT);
+   output [3:0]  FLAG_OUT);
    
    integer       IADD = 4'b0000;
    integer       ISUB = 4'b0001;
