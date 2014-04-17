@@ -1,8 +1,8 @@
 module ALU (
    input [15:0]  DATA_A, DATA_B,
    input [3:0] 	 S_ALU,
-   reg output [15:0] ALU_OUT,
-   reg output [3:0]  FLAG_OUT);
+   output [15:0] ALU_OUT,
+	output [3:0]  FLAG_OUT);
    
    integer       IADD = 4'b0000;
    integer       ISUB = 4'b0001;
@@ -15,9 +15,8 @@ module ALU (
    integer       ISRA = 4'b1011;
    integer       INON = 4'b1111;
 	 
-   
    reg [16:0]    result;
-   reg           S,Z,C,V = 0;
+   reg           S,Z,C,V;
    
    function [16:0] ShiftLeftLogical(
       input [15:0] in,
@@ -38,7 +37,7 @@ module ALU (
       integer      i;
       
       begin
-         carry = 0;
+         carry = 1'b0;
          if (shift > 0)
            carry = in[16 - shift];
          shifted = in << shift;
@@ -56,7 +55,7 @@ module ALU (
       reg          carry;
       
       begin
-         carry = 0;
+         carry = 1'b0;
          if (shift > 0)
            carry = in[shift - 1];
          shifted = in >> shift;
@@ -73,7 +72,7 @@ module ALU (
       integer      i;
       
       begin
-	       carry = 0;
+	       carry = 1'b0;
 	       if (shift > 0)
 	         carry = in[shift - 1];
 	       shifted = in >> shift;
@@ -94,25 +93,25 @@ module ALU (
 	      ISLR : result = ShiftLeftRotate(DATA_A, DATA_B[3:0]);
 	      ISRL : result = ShiftRightLogical(DATA_A, DATA_B[3:0]);
 	      ISRA : result = ShiftRightArithmatic(DATA_A, DATA_B[3:0]);
-	      INON : result = 0;
-	      default : result = 0;
+	      INON : result = 16'b0;
+	      default : result = 16'b0;
       endcase // case S_ALU
       if (S_ALU != INON) begin
-	 Z <= result[15:0] == 0;
+	 Z <= result[15:0] == 1'b0;
 	 C <= result[16];
-	 S <= result[15] == 1;
+	 S <= result[15] == 1'b1;
 	 if (((S_ALU == IADD) 
               && (DATA_A[15] == DATA_B[15])
 	      && (DATA_A[15] != result[15]))
 	     || ((S_ALU == ISUB)
 	         && (DATA_A[15] != DATA_B[15])
 	         && (DATA_A[15] != result[15])))
-	   V = 1;
+	   V = 1'b1;
 	 else
-	   V = 0;
+	   V = 1'b0;
       end // if (S_ALU != INON)
    end // initial begin
 
-   ALU_OUT <= result[15:0];
-   FLAG_OUT <= {S, Z, C, V};
+   assign ALU_OUT = result[15:0];
+   assign FLAG_OUT = {S, Z, C, V};
 endmodule

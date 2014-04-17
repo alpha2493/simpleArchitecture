@@ -106,10 +106,10 @@ module StackPointerRegister (
         stackPointer = 16'b0;
       else
          case (op)
-           2'0 : stackPointer = stackPointer + 1;
-           2'1 : stackPointer = stackPointer - 1;
-           2'2 : stackPointer = writeData;
-           2'3 : stackPointer = stackPointer;
+           2'b00 : stackPointer = stackPointer + 1;
+           2'b01 : stackPointer = stackPointer - 1;
+           2'b10 : stackPointer = writeData;
+           2'b11 : stackPointer = stackPointer;
            default : stackPointer = stackPointer;
          endcase
    end

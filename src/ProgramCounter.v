@@ -3,11 +3,11 @@ module ProgramCounter (
    input [15:0]  address,
    output [15:0] counter);
    
-   reg [15:0]    count = 16'0;
+   reg [15:0]    count = 16'b0;
    
    always @ (posedge clk) begin
       if (reset)
-	      count = 16'0;
+	      count = 16'b0;
       else if (load)
 	      count = address;
       else
