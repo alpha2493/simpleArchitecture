@@ -17,12 +17,14 @@ module ControlUnit(
    reg [3:0] R1 = 4'b0, R2 = 4'b0;
 
    always @ (posedge CLOCK) begin
+      operands[0] = EXEC;
       for (i = 4; i >= 0; i = i - 1)
-         if (i < 4 && i > 0)
-            operands[i + 1] = operands[i];
-         else if (i == 0)
-            operands[i] = EXEC;
          op = operands[i];
+         if (i == 0)
+         else if (i == 1)
+         else if (i == 2)
+         else if (i == 3)
+         else if (i == 4)
          OP1 = op[15:14];
          Rs = op[13:11];
          Rd = op[10:8];
@@ -47,6 +49,8 @@ module ControlUnit(
                   endcase // case (Rd)
               endcase // case(Rs)
          endcase // case (OP1)
+         if (i < 4)
+            operands[i + 1] = operands[i];
    end // always @ (posedge CLOCK)
 
    assign S_ALU = ALUselect;
