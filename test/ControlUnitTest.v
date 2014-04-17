@@ -8,12 +8,14 @@ module CONTROLUNITTEST;
    initial begin
       $dumpfile("cuTest.vcd");
       $dumpvars(0, CONTROLUNITTEST);
-      $monitor("%t", command, s_alu);
+      $monitor("%t:%b: %b -> alu:%b",$time, clock,  command, s_alu);
 
       clock = 0;
-      command = 16'b1111110100001111;
+      command = 16'b11_111_101_0000_1111; //ADD 111 101 
       #10 clock = 1;
-      #10 clock = 0; command = 16'b0011110100000000;
+      #10 clock = 0; command = 16'b11_111_101_0010_0000; //AND 111 101
+      #10 clock = 1;
+      #10 clock = 0; command = 16'b00_111_101_00000000; //LD 111 0(101)
       #10 clock = 1;
       #10 $finish;
 
