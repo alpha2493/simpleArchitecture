@@ -17,11 +17,11 @@ module PhaseCounter(
          counter = (counter + 1) % 5;
 
       case (counter)
-         3'b0 : decode = 5'b00001;
-         3'b1 : decode = 5'b00010;
-         3'b2 : decode = 5'b00100;
-         3'b3 : decode = 5'b01000;
-         3'b4 : decode = 5'b10000;
+         3'b000 : decode = 5'b00001;
+         3'b001 : decode = 5'b00010;
+         3'b010 : decode = 5'b00100;
+         3'b011 : decode = 5'b01000;
+         3'b100 : decode = 5'b10000;
          default : decode = 5'b00000;
       endcase
    end

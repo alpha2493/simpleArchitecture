@@ -9,13 +9,13 @@ module Register (
    
    initial begin
       for (i = 0; i < 8 ; i = i + 1)
-        register[i] = 16'0
+        register[i] = 16'b0;
    end
    
    always @ (posedge clock) begin
       if (reset)
         for (i = 0; i < 8 ; i = i + 1)
-          register[i] = 16'0;
+          register[i] = 16'b0;
       
       if (write)
         register[writeAddress] = writeData;
