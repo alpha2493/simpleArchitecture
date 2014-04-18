@@ -1,6 +1,6 @@
 module Memory(
 	      input write,
-	      input [15:0]  address, writeData
+	      input [15:0]  address, writeData,
 	      output [15:0] data);
 
 `define MAX 4096
