@@ -4,16 +4,16 @@ module ALU (
    output [15:0] ALU_OUT,
    output [3:0]  FLAG_OUT);
 
-   parameter IADD = 4'b0000;
-   parameter ISUB = 4'b0001;
-   parameter IAND = 4'b0010;
-   parameter IOR  = 4'b0011;
-   parameter IXOR = 4'b0100;
-   parameter ISLL = 4'b1000;
-   parameter ISLR = 4'b1001;
-   parameter ISRL = 4'b1010;
-   parameter ISRA = 4'b1011;
-   parameter INON = 4'b1111;
+   integer IADD = 4'b0000;
+   integer ISUB = 4'b0001;
+   integer IAND = 4'b0010;
+   integer IOR  = 4'b0011;
+   integer IXOR = 4'b0100;
+   integer ISLL = 4'b1000;
+   integer ISLR = 4'b1001;
+   integer ISRL = 4'b1010;
+   integer ISRA = 4'b1011;
+   integer INON = 4'b1111;
 
    reg [16:0]    result;
    reg           S,Z,C,V;
