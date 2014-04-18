@@ -37,7 +37,6 @@ module ALU (
    endfunction
   
    wire [16:0] result;
-   wire [19:0] flags;
 
    assign result = amux(DATA_A, DATA_B, S_ALU);
    assign ALU_OUT = result[15:0];
