@@ -6,7 +6,7 @@ module ControlUnit(
    input [7:0] 	 d,
    input [15:0]  ALU_Value,
    input [15:0]  Ra,
-   output [3:0]  writeAddress,
+   output [2:0]  writeAddress,
    output [3:0]  S_ALU,
    output [15:0] immidiate,
    output 	 PC_load, Reset, AR_MUX, BR_MUX, INPUT_MUX, ADR_MUX, write
@@ -16,6 +16,10 @@ module ControlUnit(
    integer 	INON = 4'b1111;
 
 
+   //ADR_MUX
+   always @ (posedge CLOCK) begin
+      if (COMMAND[15:14] == 2'b11 ||
+	  
    //BR_MUX
    always @ (posedge CLOCK) begin
       if (COMMAND[15:14] != 2'b10 || COMMAND[15:11] == 5'b10000)
@@ -32,7 +36,16 @@ module ControlUnit(
 	assign AR_MUX = 0;
    end
 
-   //
+   //INPUT_MUX
+   always @ (posedge CLOCK) begin
+      if (COMMAND[15:14] == 2'b11 && COMMAND[7:4] == 4'b1100)
+	assign INPUT_MUX = 1;
+      else
+	assign INPUT_MUX = 0;
+   end
+   
+      
+
    
 	  
 
