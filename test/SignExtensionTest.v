@@ -1,9 +1,9 @@
 module SIGNEXTENSIONTEST;
-   reg [3:0] a, b;
-   wire [15:0] out, nout;
+   reg [15:0] a, b;
+   wire [31:0] out, nout;
    
-   SignExtension #(4, 16) se (a, out);
-   NotSignExtension #(4, 16) nse (b, nout);
+   SignExtension #(16, 32) se (a, out);
+   NotSignExtension #(16, 32) nse (b, nout);
 
    initial begin
       $dumpfile("singextensionTest.vcd");
@@ -11,16 +11,16 @@ module SIGNEXTENSIONTEST;
       $display("SignExtension");
       $monitor ("%t: a = %b, out = %b", $time, a, out);      
 
-      a = 4'b0011;
-      #10 a = 4'b1000;
-      #10 a = 4'b0101;
+      a = 16'b0011_0000_0000_0000;
+      #10 a = 16'b1000_0000_0000_0000;
+      #10 a = 16'b0101_0000_0000_0000;
       #10
       $display("NotSignExtension");
       $monitor ("%t: a = %b, out = %b", $time, b, nout);      
 
-      b = 4'b0011;
-      #10 b = 4'b1100;
-      #10 b = 4'b0101;
+      b = 16'b0011_0000_0000_0000;
+      #10 b = 16'b1100_0000_0000_0000;
+      #10 b = 16'b0101_0000_0000_0000;
       #10 $finish;
    end
 endmodule // MUXTEST
