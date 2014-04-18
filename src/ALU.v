@@ -30,7 +30,7 @@ module ALU (
          ISRL : result = {DATA_B[3:0] > 0 ? DATA_A[DATA_B[3:0] - 1] : 1'b0, DATA_A >> DATA_B[3:0]};
          ISRA : result = {DATA_B[3:0] > 0 ? DATA_A[DATA_B[3:0] - 1] : 1'b0, DATA_A >>> DATA_B[3:0]};
          INON : result = 16'b0;
-         default : result <= 16'b0;
+         default : result = 16'b0;
       endcase // case S_ALU
       if (S_ALU != INON) begin
          Z = result[15:0] == 1'b0;
