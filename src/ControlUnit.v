@@ -4,7 +4,7 @@ module ControlUnit(
    input 	 EXEC,
    input [15:0]  COMMAND,
    input [3:0] 	 SZCV,
-   output 	 Reset,
+   output 	 Reset_signal,
    output [15:0] immidiate,
    output 	 AR_MUX, BR_MUX,
    output [3:0]  S_ALU,
@@ -121,7 +121,7 @@ module ControlUnit(
    end
    
    assign S_ALU = Select_ALU;
-   assign Reset = 0;
+   assign Reset_signal = 0;
    assign AR_MUX = ar;
    assign BR_MUX = br;
    assign write = wr;
