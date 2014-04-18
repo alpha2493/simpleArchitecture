@@ -30,7 +30,7 @@ module ALU (
          ISLR : amux = ({1'b0, A} << B[3:0]) | (A >> 16 - B[3:0]);
          ISRL : amux = {B[3:0] > 0 ? A[B[3:0] - 1] : 1'b0, A >> B[3:0]};
          ISRA : amux = {B[3:0] > 0 ? A[B[3:0] - 1] : 1'b0, A >>> B[3:0]};
-         IIDT : amux = {1'b0, A};
+         IIDT : amux = {1'b0, B};
          INON : amux = 17'b0;
          default : amux = 17'b0;
       endcase
