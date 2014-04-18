@@ -26,17 +26,17 @@ module ControlUnit(
       if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b1100) ||
 	  COMMAND[15:14] == 2'b00 ||
 	  COMMAND[15:11] == 5'b10000)
-	assign wr = 1;
+	wr <= 1;
       else
-	assign wr = 0;
+	wr <=0;
    end
 
    //PC_load
    always @ (posedge CLOCK) begin
       if (COMMAND[15:11] == 5'b10100 || COMMAND[15:11] == 5'b10111)
-	assign pcl = 1;
+	pcl <= 1;
       else
-	assign pcl = 0;
+	pcl <= 0;
    end
    
 
@@ -44,35 +44,35 @@ module ControlUnit(
    //INPUT_MUX
    always @ (posedge CLOCK) begin
       if (COMMAND[15:14] == 2'b11 && COMMAND[7:4] == 4'b1100)
-	assign in = 1;
+	in <= 1;
       else
-	assign in = 0;
+	in <= 0;
    end
    
 
    //ADR_MUX
    always @ (posedge CLOCK) begin
       if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b1011) ||COMMAND[15:14] == 2'b10)
-	assign adr = 1;
+	adr <= 1;
       else
-	assign adr = 0;
+	adr <= 0;
    end
    
 	  
    //BR_MUX
    always @ (posedge CLOCK) begin
       if (COMMAND[15:14] != 2'b10 || COMMAND[15:11] == 5'b10000)
-	assign br = 1;
+	br <= 1;
       else
-	assign br = 0;
+	br <= 0;
    end
 
    //AR_MUX
    always @ (posedge CLOCK) begin
       if (COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b0110)
-	assign ar = 1;
+	ar <= 1;
       else
-	assign ar = 0;
+	ar <= 0;
    end
 
    
