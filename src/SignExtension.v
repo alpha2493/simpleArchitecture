@@ -11,7 +11,7 @@ module SignExtension(I, O);
    always @ (I) begin
       d = I;
       for (i = 0; i < size; i = i + 1)
-         d[n - 1 - i] = I[m - 1];
+         d[n - 1 - i] <= I[m - 1];
    end
    assign O = d;
 endmodule
@@ -29,7 +29,7 @@ module NotSignExtension(I, O);
    always @ (I) begin
       d = I;
       for (i = 0; i < size; i = i + 1) 
-         d[n - 1 - i] = 1'b0;
+         d[n - 1 - i] <= 1'b0;
    end
    assign O = d;
 endmodule
