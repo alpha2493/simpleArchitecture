@@ -61,7 +61,7 @@ module ControlUnit(
 	  
    //BR_MUX
    always @ (posedge CLOCK) begin
-      if (COMMAND[15:14] != 2'b10 || COMMAND[15:11] == 5'b10000)
+      if (COMMAND[15:14] != 2'b10)
 	br <= 1;
       else
 	br <= 0;
