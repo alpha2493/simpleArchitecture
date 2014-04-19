@@ -2,7 +2,7 @@ module SIGNEXTENSIONTEST;
    reg [15:0] a, b;
    wire [31:0] out, nout;
    
-   SignExtension #(16, 32) se (a, out);
+   SignExtension #(16, 32) se (a, 0, out);
    NotSignExtension #(16, 32) nse (b, nout);
 
    initial begin

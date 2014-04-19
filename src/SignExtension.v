@@ -1,8 +1,9 @@
-module SignExtension(I, O);
-   parameter m = 4;
-   parameter n = 16;
+module SignExtension(I, sw, O);
+   parameter m = 16;
+   parameter n = 32;
 
    input [m-1:0] I;
+   input       sw;
    output [n-1:0] O;
 
    function [n-1:0] signExt(
@@ -13,17 +14,17 @@ module SignExtension(I, O);
 
       begin
          signExt = data;
-         for (i = 0; i < size; i = i + 1)
-            signExt[n - 1 - i] = data[m - 1];
+         for (i = size; i < n; i = i + 1)
+            signExt[i] = data[size - 1];
       end
    endfunction
 
-   assign O = signExt(I, n - m);
+   assign O = signExt(I, sw ? 32 : 16);
 endmodule
 
 module NotSignExtension(I, O);
-   parameter m = 4;
-   parameter n = 16;
+   parameter m = 16;
+   parameter n = 32;
 
    input [m-1:0] I;
    output [n-1:0] O;
