@@ -1,5 +1,5 @@
 module MUX(A, B, Sw, Out);
-   parameter n = 0;
+   parameter n = 1;
    
    input [n-1:0] A;
    input [n-1:0] B;
