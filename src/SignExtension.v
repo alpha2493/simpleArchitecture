@@ -1,22 +1,22 @@
 module SignExtension(I, sw, O);
-   input [15:0]  I;
+   input [7:0]  I;
    input         sw;
-   output [31:0] O;
+   output [15:0] O;
 	
-   function [31:0] signExt(
-      input [15:0] data,
+   function [15:0] signExt(
+      input [7:0] data,
       input sw);
 
-		reg [23:0] ext;
+		reg [11:0] ext;
 		integer i;
 
       begin
-			i = sw ? 16 : 8;
-			ext = {24{data[i - 1]}};
+			i = sw ? 8 : 4;
+			ext = {12{data[i - 1]}};
 			if (sw)
-				signExt = {ext[15:0], data};
+				signExt = {ext[7:0], data};
 			else 
-				signExt = {ext, data[7:0]};
+				signExt = {ext, data[3:0]};
       end
    endfunction
 
