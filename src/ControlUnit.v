@@ -17,7 +17,7 @@ module ControlUnit(
         end
    end
 
-   always @ (posedge CLK) begin
+   always @ (posedge CLOCK) begin
       chattering_switch <= 1;
    end
 

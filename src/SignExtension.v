@@ -1,47 +1,49 @@
 module SignExtension(I, sw, O);
-   parameter m = 16;
-   parameter n = 32;
+   input [7:0]  I;
+   input         sw;
+   output [15:0] O;
+	
+   function [15:0] signExt(
+      input [7:0] data,
+      input sw);
 
-   input [m-1:0] I;
-   input       sw;
-   output [n-1:0] O;
-
-   function [n-1:0] signExt(
-      input [m-1:0] data,
-      input integer size);
-
-      integer i;
+		reg [11:0] ext;
+		integer i;
 
       begin
-         signExt = data;
-         for (i = size; i < n; i = i + 1)
-            signExt[i] = data[size - 1];
+			i = sw ? 8 : 4;
+			ext = {12{data[i - 1]}};
+			if (sw)
+				signExt = {ext[7:0], data};
+			else 
+				signExt = {ext, data[3:0]};
       end
    endfunction
 
-   assign O = signExt(I, sw ? 32 : 16);
+   assign O = signExt(I, sw);
 endmodule
 
-module NotSignExtension(I, O);
-   parameter m = 16;
-   parameter n = 32;
+module NotSignExtension(I, sw, O);
+   input [7:0]  I;
+   input         sw;
+   output [15:0] O;
+	
+	wire [15:0] out1; 
+	
+   function [15:0] notSignExt(
+      input [7:0] data,
+      input sw);
 
-   input [m-1:0] I;
-   output [n-1:0] O;
-
-   function [n-1:0] notSignExt(
-      input [m-1:0] data,
-      input integer size);
-
-      integer i;
-
+		reg [11:0] ext;
+		
       begin
-         notSignExt = data;
-         for (i = 0; i < size; i = i + 1)
-            notSignExt[n - 1 - i] = 1'b0;
+			ext = 12'b0;
+			if (sw)
+				notSignExt = {ext[7:0], data};
+			else 
+				notSignExt = {ext, data[3:0]};
       end
    endfunction
 
-   assign O = notSignExt(I, n - m);
+   assign O = notSignExt(I, sw);
 endmodule
-
