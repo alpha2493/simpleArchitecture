@@ -4,7 +4,7 @@ module DecodeUnit(
    output 	signEx,
    output 	AR_MUX, BR_MUX,
    output [3:0] S_ALU,
-   output 	INPUT_MUX,
+   output 	INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
    output 	ADR_MUX, write, PC_load
 );
@@ -12,9 +12,16 @@ module DecodeUnit(
    reg [3:0] 	Select_ALU;
    integer 	INON = 4'b1111;
 
-   reg 		wr, pcl, in, adr, ar, br, se;
+   reg 		wr, pcl, in, adr, ar, br, se, wren;
    
-
+   //wren
+   always @ (COMMAND) begin
+      if (COMMAND[15:14] == 2'b01)
+	wren <= 1;
+      else
+	wren <= 0;
+   end
+     
    //signEx
    always @ (COMMAND) begin
       if (COMMAND[15:14] == 2'b11)
@@ -78,13 +85,7 @@ module DecodeUnit(
       else
 	ar <= 0;
    end
-
    
-      
-
-   
-	  
-
    //各種演算命令
    always @ (COMMAND) begin
       if (COMMAND[15:14] == 2'b11)
@@ -93,7 +94,7 @@ module DecodeUnit(
 	Select_ALU = INON;
    end
 
-
+/*
    //主記憶・レジスタ間のデータ転送
    always @ (COMMAND) begin
       case (COMMAND[15:14])
@@ -123,7 +124,7 @@ module DecodeUnit(
 	  3'b011 : ; //BNE
 	endcase // case (COMMAND[10:8])
    end
-   
+  */ 
    assign S_ALU = Select_ALU;
    assign AR_MUX = ar;
    assign BR_MUX = br;
@@ -132,6 +133,7 @@ module DecodeUnit(
    assign INPUT_MUX = in;
    assign ADR_MUX = adr;
    assign signEx = se;
+   assign writeEnabla = wren;
    
    
    
