@@ -1,6 +1,5 @@
 module DecodeUnit(
    input [15:0] COMMAND,
-   input [3:0] 	SZCV,
    output 	signEx,
    output 	AR_MUX, BR_MUX,
    output [3:0] S_ALU,
