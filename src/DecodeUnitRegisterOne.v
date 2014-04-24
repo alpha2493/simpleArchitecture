@@ -4,7 +4,7 @@ module DecodeUnitRegisterOne(
    input 	input_IN, wren_IN,
    input [2:0] 	writeAd_IN,
    input 	ADR_MUX_IN, write_IN, PC_load_IN,
-   input 	cond_IN,
+   input [2:0]	cond_IN,
    output 	AR_OUT, BR_OUT,
    output [3:0] ALU_OUT,
    output 	input_OUT, wren_OUT,
