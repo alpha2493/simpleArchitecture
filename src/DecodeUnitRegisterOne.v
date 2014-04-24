@@ -1,8 +1,20 @@
 module DecodeUnitRegisterOne(
-   input  CLK, AR_IN, BR_IN, [3:0] ALU_IN, input_IN, wren_IN, [2:0] writeAd_IN, ADR_MUX_IN, write_IN, PC_load_IN,
-   output AR_OUT, BR_OUT, [3:0] ALU_OUT, input_OUT, wren_OUT, [2:0] writeAd_OUT, ADR_MUX_OUT, write_OUT, PC_load_OUT);
+   input        CLK, AR_IN, BR_IN,
+   input [3:0]  ALU_IN,
+   input        input_IN, wren_IN,
+   input [2:0]  writeAd_IN,
+   input        ADR_MUX_IN, write_IN, PC_load_IN,
+   output       AR_OUT, BR_OUT,
+   output [3:0] ALU_OUT,
+   output       input_OUT, wren_OUT,
+   output [2:0] writeAd_OUT,
+   output       ADR_MUX_OUT, write_OUT, PC_load_OUT);
 
-   reg    ar, br, [3:0] alu, in, wren, [2:0] writeAd, adrmux, write, pcload;
+   reg          ar, br;
+   reg [3:0]    alu;
+   reg          in, wren;
+   reg [2:0]    writeAd;
+   reg          adrmux, write, pcload;
 
    always @ (posedge CLK) begin
       ar <= AR_IN;
