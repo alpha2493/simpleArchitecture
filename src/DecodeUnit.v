@@ -132,7 +132,7 @@ module DecodeUnit(
    assign INPUT_MUX = in;
    assign ADR_MUX = adr;
    assign signEx = se;
-   assign writeEnabla = wren;
+   assign writeEnable = wren;
    
    
    
