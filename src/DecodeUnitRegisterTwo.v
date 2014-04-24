@@ -1,4 +1,4 @@
-module OnewordRegister(
+module DecodeUnitRegisterTwo(
    input  input_IN, wren_IN, CLK,
    output input_OUT, wren_OUT);
 
@@ -12,4 +12,5 @@ module OnewordRegister(
    assign input_OUT = in;
    assign wren_OUT = wren;
    
-endmodule // OnewordRegister
+endmodule // DecodeUnitRegisterTwo
+
