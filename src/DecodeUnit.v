@@ -9,7 +9,18 @@ module DecodeUnit(
 );
 
    reg [3:0] 	Select_ALU;
-   integer 	INON = 4'b1111;
+   integer IADD = 4'b0000;
+   integer ISUB = 4'b0001;
+   integer IAND = 4'b0010;
+   integer IOR = 4'b0011;
+   integer IXOR = 4'b0100;
+   integer ISLL = 4'b1000;
+   integer ISLR = 4'b1001;
+   integer ISRL = 4'b1010;
+   integer ISRA = 4'b1011;
+   integer IIDT = 4'b1100;
+   integer INON = 4'b1111;
+
 
    reg 		wr, pcl, in, adr, ar, br, se, wren;
    
@@ -87,10 +98,22 @@ module DecodeUnit(
    
    //各種演算命令
    always @ (COMMAND) begin
-      if (COMMAND[15:14] == 2'b11)
-	Select_ALU = COMMAND[7:4]; //ADD, SUB, etc
-      else
-	Select_ALU = INON;
+      if (COMMAND[15:14] == 2'b11)//演算命令
+	case (COMMAND[7:4])
+	  4'b0101 : Select_ALU <= ISUB;//CMP
+	  4'b0110 : Select_ALU <= IIDT;//MOV
+	  default : Select_ALU <= COMMAND[7:4];
+	endcase // case (COMMAND[7:4])
+      else if (COMMAND[15] == 1'b0)//LD, ST
+	Select_ALU <= IADD;
+      else if (COMMAND[15:11] == 5'b10000)//LI
+	Select_ALU <= IIDT;
+      else if (COMMAND[15:11] == 5'b10100)//分岐
+	Select_ALU <= IADD;
+      else if (COMMAND[15:11] == 5'b10111)//条件分岐
+	Select_ALU <= IADD;
+      else//その他
+	Select_ALU <= INON;
    end
 
 /*
