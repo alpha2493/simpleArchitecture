@@ -5,24 +5,32 @@ module DecodeUnit(
    output [3:0] S_ALU,
    output 	INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
-   output 	ADR_MUX, write, PC_load
+   output 	ADR_MUX, write, PC_load,
+   output [2:0] cond
 );
 
    reg [3:0] 	Select_ALU;
-   integer IADD = 4'b0000;
-   integer ISUB = 4'b0001;
-   integer IAND = 4'b0010;
-   integer IOR = 4'b0011;
-   integer IXOR = 4'b0100;
-   integer ISLL = 4'b1000;
-   integer ISLR = 4'b1001;
-   integer ISRL = 4'b1010;
-   integer ISRA = 4'b1011;
-   integer IIDT = 4'b1100;
-   integer INON = 4'b1111;
+   reg [3:0] 	condition;
+   integer 	IADD = 4'b0000;
+   integer 	ISUB = 4'b0001;
+   integer 	IAND = 4'b0010;
+   integer 	IOR = 4'b0011;
+   integer 	IXOR = 4'b0100;
+   integer 	ISLL = 4'b1000;
+   integer 	ISLR = 4'b1001;
+   integer 	ISRL = 4'b1010;
+   integer 	ISRA = 4'b1011;
+   integer 	IIDT = 4'b1100;
+   integer 	INON = 4'b1111;
 
 
    reg 		wr, pcl, in, adr, ar, br, se, wren;
+
+   //cond
+   always @ (COMMAND) begin
+      condition <= COMMAND[10:8];
+   end
+   
    
    //wren
    always @ (COMMAND) begin
@@ -148,6 +156,7 @@ module DecodeUnit(
    end
   */ 
    assign S_ALU = Select_ALU;
+   assign cond = condition;
    assign AR_MUX = ar;
    assign BR_MUX = br;
    assign write = wr;
