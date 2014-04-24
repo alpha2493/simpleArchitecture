@@ -6,7 +6,7 @@ module DecodeUnitRegisterThree(
    output       ADR_MUX_OUT, write_OUT, PC_load_OUT);
 
    reg [2:0]    writeAd;
-   reg          write, pcload;
+   reg          adrmux, write, pcload;
 
    always @ (posedge CLK) begin
       writeAd <= writeAd_IN;
