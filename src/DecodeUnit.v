@@ -5,7 +5,8 @@ module DecodeUnit(
    output [3:0] S_ALU,
    output 	INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
-   output 	ADR_MUX, write, PC_load
+   output 	ADR_MUX, write, PC_load,
+   output [2:0] cond
 );
 
    reg [3:0] 	Select_ALU;
@@ -23,6 +24,12 @@ module DecodeUnit(
 
 
    reg 		wr, pcl, in, adr, ar, br, se, wren;
+
+   //cond
+   always @ (COMMAND) begin
+      cond <= COMMAND[10:8];
+   end
+   
    
    //wren
    always @ (COMMAND) begin
