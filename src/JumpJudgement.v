@@ -19,7 +19,7 @@ module JumpJudgement(
 	  default : pcl = 1'b0;
 	endcase // case (cond)
       else if (op2 == 3'b100)
-	pcl = 1'b1;
+	pcl = PC_load_in;
       else
 	pcl = 1'b0;
    end // always @ (PC_load_in or cond)
