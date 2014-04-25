@@ -1,6 +1,6 @@
 module Register (
    input         clock, write, reset,
-   input [3:0]   address1, address2, writeAddress,
+   input [2:0]   address1, address2, writeAddress,
    input [15:0]  writeData,
    output [15:0] data1, data2);
    

@@ -1,36 +1,49 @@
-module SignExtension(I, O);
-   parameter m = 4;
-   parameter n = 16;
+module SignExtension(I, sw, O);
+   input [7:0]  I;
+   input         sw;
+   output [15:0] O;
+	
+   function [15:0] signExt(
+      input [7:0] data,
+      input sw);
 
-   input [m-1:0] I;
-   output [n-1:0] O;
+		reg [11:0] ext;
+		integer i;
 
-   reg[n-1:0] d;
-   integer size = n - m;
-   integer i;
-   always @ (I) begin
-      d = I;
-      for (i = 0; i < size; i = i + 1)
-         d[n - 1 - i] = I[m - 1];
-   end
-   assign O = d;
+      begin
+			i = sw ? 8 : 4;
+			ext = {12{data[i - 1]}};
+			if (sw)
+				signExt = {ext[7:0], data};
+			else 
+				signExt = {ext, data[3:0]};
+      end
+   endfunction
+
+   assign O = signExt(I, sw);
 endmodule
 
-module NotSignExtension(I, O);
-   parameter m = 4;
-   parameter n = 16;
+module NotSignExtension(I, sw, O);
+   input [7:0]  I;
+   input         sw;
+   output [15:0] O;
+	
+	wire [15:0] out1; 
+	
+   function [15:0] notSignExt(
+      input [7:0] data,
+      input sw);
 
-   input [m-1:0] I;
-   output [n-1:0] O;
+		reg [11:0] ext;
+		
+      begin
+			ext = 12'b0;
+			if (sw)
+				notSignExt = {ext[7:0], data};
+			else 
+				notSignExt = {ext, data[3:0]};
+      end
+   endfunction
 
-   reg[n-1:0] d;
-   integer size = n - m;
-   integer i;
-   always @ (I) begin
-      d = I;
-      for (i = 0; i < size; i = i + 1) 
-         d[n - 1 - i] = 1'b0;
-   end
-   assign O = d;
+   assign O = notSignExt(I, sw);
 endmodule
-
