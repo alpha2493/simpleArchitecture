@@ -54,7 +54,7 @@ module DecodeUnit(
    always @ (COMMAND) begin
       if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b1100) ||
 	  COMMAND[15:14] == 2'b00 ||
-	  COMMAND[15:11] == 5'b10000)
+	  COMMAND[15:12] == 5'b1000)
 	wr <= 1;
       else
 	wr <=0;
@@ -90,7 +90,7 @@ module DecodeUnit(
 	  
    //BR_MUX
    always @ (COMMAND) begin
-      if (COMMAND[15:14] != 2'b10)
+      if (COMMAND[15:14] != 2'b10 || COMMAND[13] != 1'b1)
 	br <= 1;
       else
 	br <= 0;
@@ -98,7 +98,7 @@ module DecodeUnit(
 
    //AR_MUX
    always @ (COMMAND) begin
-      if (COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b0110)
+      if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b0110) || COMMAND[15:11] == 5'b10001)
 	ar <= 1;
       else
 	ar <= 0;
@@ -124,37 +124,7 @@ module DecodeUnit(
 	Select_ALU <= INON;
    end
 
-/*
-   //主記憶・レジスタ間のデータ転送
-   always @ (COMMAND) begin
-      case (COMMAND[15:14])
-	2'b00 : ; //LD
-	2'b01 :	; //ST
-      endcase // case (COMMAND[15:14])
-   end
 
-
-   
-   always @ (COMMAND) begin
-      if (COMMAND[15:14] == 2'b10)
-	case (COMMAND[13:11])
-	  3'b000 : ; //LI
-	  3'b100 : ; //B
-	endcase // case (COMMAND[13:11])
-   end
-
-
-   //ジャンプ
-   always @ (COMMAND) begin
-      if (COMMAND[15:11] == 5'b10111)
-	case (COMMAND[10:8])
-	  3'b000 : ; //BE
-	  3'b001 : ; //BLT
-	  3'b010 : ; //BLE
-	  3'b011 : ; //BNE
-	endcase // case (COMMAND[10:8])
-   end
-  */ 
    assign S_ALU = Select_ALU;
    assign cond = condition;
    assign AR_MUX = ar;
