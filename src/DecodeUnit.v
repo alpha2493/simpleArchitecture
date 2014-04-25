@@ -6,11 +6,12 @@ module DecodeUnit(
    output 	INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
    output 	ADR_MUX, write, PC_load,
-   output [2:0] cond
+   output [2:0] cond, op2
 );
 
    reg [3:0] 	Select_ALU;
-   reg [3:0] 	condition;
+   reg [2:0] 	condition;
+   reg [2:0] 	opera2;
    integer 	IADD = 4'b0000;
    integer 	ISUB = 4'b0001;
    integer 	IAND = 4'b0010;
@@ -40,7 +41,11 @@ module DecodeUnit(
    always @ (COMMAND) begin
       condition <= COMMAND[10:8];
    end
-   
+
+   //op2
+   always @ (COMMAND) begin
+      opera2 <= COMMAND[13:11];
+   end
    
    //wren
    always @ (COMMAND) begin
@@ -136,6 +141,7 @@ module DecodeUnit(
 	Select_ALU <= INON;
    end
 
+   assign op2 = opera2;
    assign writeAddress = wrAdr;
    assign S_ALU = Select_ALU;
    assign cond = condition;
