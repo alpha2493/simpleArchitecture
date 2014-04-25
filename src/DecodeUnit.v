@@ -24,8 +24,18 @@ module DecodeUnit(
    integer 	INON = 4'b1111;
 
 
+   reg [2:0] 	wrAdr; 	
    reg 		wr, pcl, in, adr, ar, br, se, wren;
 
+
+   //wrAdr
+   always @ (COMMAND) begin
+     if (COMMAND[15:14] == 2'b00)
+       wrAdr <= COMMAND[13:11];
+     else
+       wrAdr <= COMMAND[10:8];
+   end
+   
    //cond
    always @ (COMMAND) begin
       condition <= COMMAND[10:8];
@@ -98,7 +108,7 @@ module DecodeUnit(
 
    //AR_MUX
    always @ (COMMAND) begin
-      if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b0110) || COMMAND[15:11] == 5'b10001)
+      if (COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b0110)
 	ar <= 1;
       else
 	ar <= 0;
@@ -116,6 +126,8 @@ module DecodeUnit(
 	Select_ALU <= IADD;
       else if (COMMAND[15:11] == 5'b10000)//LI
 	Select_ALU <= IIDT;
+      else if (COMMAND[15:11] == 5'b10001)//ADDI
+	Select_ALU <= IADD;
       else if (COMMAND[15:11] == 5'b10100)//分岐
 	Select_ALU <= IADD;
       else if (COMMAND[15:11] == 5'b10111)//条件分岐
@@ -124,7 +136,7 @@ module DecodeUnit(
 	Select_ALU <= INON;
    end
 
-
+   assign writeAddress = wrAdr;
    assign S_ALU = Select_ALU;
    assign cond = condition;
    assign AR_MUX = ar;
