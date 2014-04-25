@@ -3,7 +3,7 @@ module MUXTEST;
    reg 	      Sw;
    wire [3:0] out;
    
-   MUX #(4) mux (a, b, Sw, out);
+   Multiplexer #(4) mux (a, b, Sw, out);
 
 
    initial begin

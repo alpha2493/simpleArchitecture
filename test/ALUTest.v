@@ -3,13 +3,14 @@ module ALUTEST;
    reg [3:0]  salu;
    wire [15:0] aout;
    wire [3:0]  fout;
+   wire fwrite;
    
-   ALU alu (a, b, salu, aout, fout);
+   ALU alu (a, b, salu, aout, fout, fwrite);
 
    initial begin
       $dumpfile("aluTest.vcd");
       $dumpvars(0, ALUTEST);
-      $monitor ("%t: %b, %b -> %b :: %d, %d -> %d (%b)", $time, a, b, aout, a, b, aout, fout);
+      $monitor ("%t: %b, %b -> %b :: %d, %d -> %d (%b), %b", $time, a, b, aout, a, b, aout, fout, fwrite);
 
       $display(" --- IADD ---");
       salu = 4'b0000; a = 16'd0; b = 16'd0;
