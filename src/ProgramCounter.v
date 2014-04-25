@@ -1,5 +1,5 @@
 module ProgramCounter (
-   input         load, reset, clk,
+   input         load, reset, notUpdate, clk,
    input [15:0]  address,
    output [15:0] counter);
    
@@ -10,7 +10,7 @@ module ProgramCounter (
 	      count = 16'b0;
       else if (load)
 	      count = address;
-      else
+      else if (!notUpdate)
         count = count + 1;
    end
    
