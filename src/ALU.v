@@ -17,6 +17,8 @@ module ALU (
    integer IIDT = 4'b1100;
    integer INON = 4'b1111;
 
+   wire S, Z, V;
+
    function [16:0] amux(
       input signed [15:0] A, B,
       input [3:0] Selector);
