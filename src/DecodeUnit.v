@@ -24,7 +24,6 @@ module DecodeUnit(
    integer 	IIDT = 4'b1100;
    integer 	INON = 4'b1111;
 
-
    reg [2:0] 	wrAdr; 	
    reg 		wr, pcl, in, adr, ar, br, se, wren;
 
@@ -61,9 +60,7 @@ module DecodeUnit(
 	se <= 1;
       else
 	se <= 0;
-   end
-   
-   
+   end   
 
    //write
    always @ (COMMAND) begin
@@ -82,8 +79,6 @@ module DecodeUnit(
       else
 	pcl <= 0;
    end
-   
-
 
    //INPUT_MUX
    always @ (COMMAND) begin
@@ -92,7 +87,6 @@ module DecodeUnit(
       else
 	in <= 0;
    end
-   
 
    //ADR_MUX
    always @ (COMMAND) begin
@@ -101,8 +95,7 @@ module DecodeUnit(
       else
 	adr <= 0;
    end
-   
-	  
+
    //BR_MUX
    always @ (COMMAND) begin
       if (COMMAND[15:14] != 2'b10 || COMMAND[13] != 1'b1)
@@ -152,9 +145,6 @@ module DecodeUnit(
    assign INPUT_MUX = in;
    assign ADR_MUX = adr;
    assign signEx = se;
-   assign writeEnable = wren;
-   
-   
-   
+   assign writeEnable = wren;   
    
 endmodule // DecodeUnit
