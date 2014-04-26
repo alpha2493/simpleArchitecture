@@ -7,9 +7,9 @@ module ProgramCounter (
    
    always @ (posedge clk) begin
       if (reset)
-	      count = 16'b0;
+	count = 16'b0;
       else if (load)
-	      count = address;
+	count = address + 1;
       else if (!notUpdate)
         count = count + 1;
    end

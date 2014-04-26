@@ -4,20 +4,20 @@ module DecodeUnitRegisterOne(
    input 	input_IN, wren_IN,
    input [2:0] 	writeAd_IN,
    input 	ADR_MUX_IN, write_IN, PC_load_IN,
-   input [2:0]	cond_IN,
+   input [2:0]	cond_IN, op2_IN,
    output 	AR_OUT, BR_OUT,
    output [3:0] ALU_OUT,
    output 	input_OUT, wren_OUT,
    output [2:0] writeAd_OUT,
    output 	ADR_MUX_OUT, write_OUT, PC_load_OUT,
-   output [2:0] cond_OUT);
+   output [2:0] cond_OUT, op2_OUT);
 
    reg          ar, br;
    reg [3:0]    alu;
    reg          in, wren;
    reg [2:0]    writeAd;
    reg          adrmux, write, pcload;
-   reg [2:0] 	cond;
+   reg [2:0] 	cond, opera2;
 
    always @ (posedge CLK) begin
       ar <= AR_IN;
@@ -30,6 +30,7 @@ module DecodeUnitRegisterOne(
       write <= write_IN;
       pcload <= PC_load_IN;
       cond <= cond_IN;
+      opera2 <= op2_IN;
    end // always @ (posedge CLK)
    
    assign AR_OUT = ar;
@@ -42,5 +43,6 @@ module DecodeUnitRegisterOne(
    assign write_OUT = write;
    assign PC_load_OUT = pcload;
    assign cond_OUT = cond;
+   assign op2_OUT = opera2;
    
 endmodule // DecodeUnitRegisterOne

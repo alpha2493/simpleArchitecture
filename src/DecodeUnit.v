@@ -6,11 +6,12 @@ module DecodeUnit(
    output 	INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
    output 	ADR_MUX, write, PC_load,
-   output [2:0] cond
+   output [2:0] cond, op2
 );
 
    reg [3:0] 	Select_ALU;
-   reg [3:0] 	condition;
+   reg [2:0] 	condition;
+   reg [2:0] 	opera2;
    integer 	IADD = 4'b0000;
    integer 	ISUB = 4'b0001;
    integer 	IAND = 4'b0010;
@@ -23,14 +24,27 @@ module DecodeUnit(
    integer 	IIDT = 4'b1100;
    integer 	INON = 4'b1111;
 
-
+   reg [2:0] 	wrAdr; 	
    reg 		wr, pcl, in, adr, ar, br, se, wren;
 
+
+   //wrAdr
+   always @ (COMMAND) begin
+     if (COMMAND[15:14] == 2'b00)
+       wrAdr <= COMMAND[13:11];
+     else
+       wrAdr <= COMMAND[10:8];
+   end
+   
    //cond
    always @ (COMMAND) begin
       condition <= COMMAND[10:8];
    end
-   
+
+   //op2
+   always @ (COMMAND) begin
+      opera2 <= COMMAND[13:11];
+   end
    
    //wren
    always @ (COMMAND) begin
@@ -46,9 +60,7 @@ module DecodeUnit(
 	se <= 1;
       else
 	se <= 0;
-   end
-   
-   
+   end   
 
    //write
    always @ (COMMAND) begin
@@ -67,8 +79,6 @@ module DecodeUnit(
       else
 	pcl <= 0;
    end
-   
-
 
    //INPUT_MUX
    always @ (COMMAND) begin
@@ -77,7 +87,6 @@ module DecodeUnit(
       else
 	in <= 0;
    end
-   
 
    //ADR_MUX
    always @ (COMMAND) begin
@@ -86,8 +95,7 @@ module DecodeUnit(
       else
 	adr <= 0;
    end
-   
-	  
+
    //BR_MUX
    always @ (COMMAND) begin
       if (COMMAND[15:14] != 2'b10 || COMMAND[13] != 1'b1)
@@ -98,7 +106,7 @@ module DecodeUnit(
 
    //AR_MUX
    always @ (COMMAND) begin
-      if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b0110) || COMMAND[15:11] == 5'b10001)
+      if (COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b0110)
 	ar <= 1;
       else
 	ar <= 0;
@@ -116,6 +124,8 @@ module DecodeUnit(
 	Select_ALU <= IADD;
       else if (COMMAND[15:11] == 5'b10000)//LI
 	Select_ALU <= IIDT;
+      else if (COMMAND[15:11] == 5'b10001)//ADDI
+	Select_ALU <= IADD;
       else if (COMMAND[15:11] == 5'b10100)//分岐
 	Select_ALU <= IADD;
       else if (COMMAND[15:11] == 5'b10111)//条件分岐
@@ -124,7 +134,8 @@ module DecodeUnit(
 	Select_ALU <= INON;
    end
 
-
+   assign op2 = opera2;
+   assign writeAddress = wrAdr;
    assign S_ALU = Select_ALU;
    assign cond = condition;
    assign AR_MUX = ar;
@@ -134,9 +145,6 @@ module DecodeUnit(
    assign INPUT_MUX = in;
    assign ADR_MUX = adr;
    assign signEx = se;
-   assign writeEnable = wren;
-   
-   
-   
+   assign writeEnable = wren;   
    
 endmodule // DecodeUnit
