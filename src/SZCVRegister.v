@@ -3,7 +3,7 @@ module SZCVRegister(
    input 	FLAG_write, CLOCK,
    output [3:0] SZCV_out);
 
-   reg 		SZCV;
+   reg [3:0] 	SZCV;
    
    
    always @ (posedge CLOCK) begin
