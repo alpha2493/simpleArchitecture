@@ -56,7 +56,7 @@ module DecodeUnit(
      
    //signEx
    always @ (COMMAND) begin
-      if (COMMAND[15:14] == 2'b11)
+      if (COMMAND[15:14] != 2'b11)
 	se <= 1;
       else
 	se <= 0;
