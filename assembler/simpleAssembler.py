@@ -35,9 +35,9 @@ def typeADD(order):
 	elif co == 'XOR':
 		op3 = '0100'
 	elif co == 'CMP':
-		op3 = '0110'
+		op3 = '0101'
 	elif co == 'MOV':
-		op3 = '0000'
+		op3 = '0110'
 
 	return '11' + rs + rd + op3 + d
 

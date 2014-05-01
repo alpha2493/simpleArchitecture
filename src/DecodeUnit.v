@@ -64,7 +64,7 @@ module DecodeUnit(
 
    //write
    always @ (COMMAND) begin
-      if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b1100) ||
+      if ((COMMAND[15:14] == 2'b11 && (COMMAND[7:4] <= 4'b1100 && COMMAND[7:4] != 4'b0101)) ||
 	  COMMAND[15:14] == 2'b00 ||
 	  COMMAND[15:12] == 5'b1000)
 	wr <= 1;
