@@ -9,9 +9,9 @@ module ProgramCounter (
       if (reset)
 	count = 16'b0;
       else if (load)
-	count = address + 1;
+	count = address + 16'b1;
       else if (!notUpdate)
-        count = count + 1;
+        count = count + 16'b1;
    end
    
    assign counter = count;

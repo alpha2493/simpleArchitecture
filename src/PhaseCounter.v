@@ -14,7 +14,7 @@ module PhaseCounter(
       if (reset)
          counter = 3'b0;
       else
-         counter = (counter + 1) % 5;
+         counter = (counter + 3'b1) % 3'd5;
 
       case (counter)
          3'b000 : decode = 5'b00001;

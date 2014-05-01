@@ -12,17 +12,17 @@ module DecodeUnit(
    reg [3:0] 	Select_ALU;
    reg [2:0] 	condition;
    reg [2:0] 	opera2;
-   integer 	IADD = 4'b0000;
-   integer 	ISUB = 4'b0001;
-   integer 	IAND = 4'b0010;
-   integer 	IOR = 4'b0011;
-   integer 	IXOR = 4'b0100;
-   integer 	ISLL = 4'b1000;
-   integer 	ISLR = 4'b1001;
-   integer 	ISRL = 4'b1010;
-   integer 	ISRA = 4'b1011;
-   integer 	IIDT = 4'b1100;
-   integer 	INON = 4'b1111;
+   localparam 	IADD = 4'b0000;
+   localparam 	ISUB = 4'b0001;
+   localparam 	IAND = 4'b0010;
+   localparam 	IOR = 4'b0011;
+   localparam 	IXOR = 4'b0100;
+   localparam 	ISLL = 4'b1000;
+   localparam 	ISLR = 4'b1001;
+   localparam 	ISRL = 4'b1010;
+   localparam 	ISRA = 4'b1011;
+   localparam 	IIDT = 4'b1100;
+   localparam 	INON = 4'b1111;
 
    reg [2:0] 	wrAdr; 	
    reg 		wr, pcl, in, adr, ar, br, se, wren;

@@ -9,7 +9,7 @@ module JumpJudgement(
 
    assign {S, Z, C, V} = FLAG;
       
-   always @ (PC_load_in or cond) begin
+   always @* begin
       if (op2 == 3'b111)
 	case (cond)
 	  4'b000 : pcl = (Z && PC_load_in) ? 1'b1 : 1'b0;
