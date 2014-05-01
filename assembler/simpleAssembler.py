@@ -123,6 +123,8 @@ def assembler(f):
 			bit = '10000' + format(int(order[1][1]), 'b').zfill(3) + signExtension(order[2], 8)
 		elif c == 'B':
 			bit = '10100' + format(int(order[1][1]), 'b').zfill(3) + signExtension(order[2], 8)
+		elif c == 'ADDI':
+			bit = '10001' + format(int(order[1][1]), 'b').zfill(3) + signExtension(order[2], 8)
 		elif c == 'BE' or c == 'BLT' or c == 'BLE' or c == 'BNE':
 			bit = typeBE(order)
 		else:
