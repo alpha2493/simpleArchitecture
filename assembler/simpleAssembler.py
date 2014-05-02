@@ -76,15 +76,14 @@ def typeLI(co, rb, d):
 	rb = format(int(rb), 'b').zfill(3)
 	d = signExtension(d, 8)
 
-	return '10000' + rb + d
+	if co == 'LI':
+		op2 = '000'
+	elif co == 'ADDI':
+		op2 = '001'
+	elif co == 'B':
+		op2 = '100'
 
-
-
-def typeB(co, rb, d):
-
-	d = signExtension(d, 8)
-
-	return '10100000' + d
+	return '10' + op2 + rb + d
 
 
 
@@ -149,19 +148,11 @@ def assembler(f):
 			machineCodes.append(bit)
 			continue;
 
-		pat = re.compile('(LI)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
+		pat = re.compile('(LI|B|ADDI)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
 		mat = pat.match(line)
 		if mat:
 			print (str(num) + ' : ' + mat.group(0))
 			bit = typeLI(mat.group(1), mat.group(2), mat.group(3))
-			machineCodes.append(bit)
-			continue
-
-		pat = re.compile('(B)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
-		mat = pat.match(line)
-		if mat:
-			print (str(num) + ' : ' + mat.group(0))
-			bit = typeB(mat.group(1), mat.group(2), mat.group(3))
 			machineCodes.append(bit)
 			continue
 
