@@ -4,24 +4,18 @@ import sys
 import re
 import argparse
 
-def signExtension(d,n):
-	bit = format(int(d), 'b')
-
+def signExtension(d, n):
 	if int(d) >= 0:
-		return bit.zfill(n)
+		return format(int(d), 'b').zfill(n)
 	else:
-		length = len(bit)
-		for i in range(n - length):
-			bit = '1' + bit
-		return bit
+		return format((2 ** n) + int(d), 'b')
 
 
 
-def typeADD(order):
-	co = order[0]
+def typeADD(co, rd, rs):
 
-	rs = format(int(order[2][1]), 'b').zfill(3)
-	rd = format(int(order[1][1]), 'b').zfill(3)
+	rs = format(int(rs), 'b').zfill(3)
+	rd = format(int(rd), 'b').zfill(3)
 	d = '0000'
 	
 	if co == 'ADD':
@@ -43,12 +37,11 @@ def typeADD(order):
 
 
 
-def typeSLL(order):
-	co = order[0]
+def typeSLL(co, rd, d):
 	
 	rs = '000'
-	rd = format(int(order[1][1]), 'b').zfill(3)
-	d = format(int(order[2]), 'b').zfill(4)
+	rd = format(int(rd), 'b').zfill(3)
+	d = signExtension(d, 4)
 
 	if co == 'SLL':
 		op3 = '1000'
@@ -63,12 +56,11 @@ def typeSLL(order):
 
 
 
-def typeLD(order):
-	co = order[0]
+def typeLD(co, ra, d, rb):
 
-	ra = format(int(order[1][1]), 'b').zfill(3)
-	rb = format(int(order[2][3]), 'b').zfill(3)
-	d = signExtension(order[2][0], 8)
+	ra = format(int(ra), 'b').zfill(3)
+	rb = format(int(rb), 'b').zfill(3)
+	d = signExtension(d, 8)
 
 	if co == 'LD':
 		op1 = '00'
@@ -79,10 +71,25 @@ def typeLD(order):
 
 
 
-def typeBE(order):
-	co = order[0]
+def typeLI(co, rb, d):
 
-	d = signExtension(order[1], 8)
+	rb = format(int(rb), 'b').zfill(3)
+	d = signExtension(d, 8)
+
+	if co == 'LI':
+		op2 = '000'
+	elif co == 'ADDI':
+		op2 = '001'
+	elif co == 'B':
+		op2 = '100'
+
+	return '10' + op2 + rb + d
+
+
+
+def typeBE(co, d):
+
+	d = signExtension(d, 8)
 
 	if co == 'BE':
 		cond = '000'
@@ -99,39 +106,76 @@ def typeBE(order):
 
 def assembler(f):
 	machineCodes = []
-	
+	num = 0
+	flag = True
+
 	for line in f:
-		if line[0] == '#':
-			continue
-		
-		order = re.split(' |,|\t', line.rstrip('\n'))
-		while order.count('') > 0:
-			order.remove('')
-		
-		if len(order) == 0:
+
+		num += 1
+
+		if line.isspace():
+			print(str(num) + ' : Empty Line')
 			continue
 
-		c = order[0]
-
-		if c == 'ADD' or c == 'SUB' or c == 'AND' or c == 'OR' or c == 'XOR' or c == 'CMP' or c == 'MOV':
-			bit = typeADD(order)
-		elif c == 'SLL' or c == 'SLR' or c == 'SRL' or c == 'SRA':
-			bit = typeSLL(order)
-		elif c == 'LD' or c == 'ST':
-			bit = typeLD(order)
-		elif c == 'LI':
-			bit = '10000' + format(int(order[1][1]), 'b').zfill(3) + signExtension(order[2], 8)
-		elif c == 'B':
-			bit = '10100' + format(int(order[1][1]), 'b').zfill(3) + signExtension(order[2], 8)
-		elif c == 'ADDI':
-			bit = '10001' + format(int(order[1][1]), 'b').zfill(3) + signExtension(order[2], 8)
-		elif c == 'BE' or c == 'BLT' or c == 'BLE' or c == 'BNE':
-			bit = typeBE(order)
-		else:
-			continue
-
-		machineCodes.append(bit)
+		line = line.strip()
 	
+		if line.startswith('#'):
+			print(str(num) + ' : Comment')
+			continue
+	
+
+		pat = re.compile('(ADD|SUB|AND|OR|XOR|CMP|MOV)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?[[][ \t]*?(\d+)[ \t]*?[]]')
+		mat = pat.match(line)
+		if mat:
+			print (str(num) + ' : ' + mat.group(0))
+			bit = typeADD(mat.group(1), mat.group(2), mat.group(3))
+			machineCodes.append(bit)
+			continue
+
+		pat = re.compile('(SLL|SLR|SRL|SRA)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
+		mat = pat.match(line)
+		if mat:
+			print (str(num) + ' : ' + mat.group(0))
+			bit = typeSLL(mat.group(1), mat.group(2), mat.group(3))
+			machineCodes.append(bit)
+			continue
+
+		pat = re.compile('(LD|ST)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)\([[][ \t]*?(\d+)[ \t]*?[]]\)')
+		mat = pat.match(line)
+		if mat:
+			print (str(num) + ' : ' + mat.group(0))
+			bit = typeLD(mat.group(1), mat.group(2), mat.group(3), mat.group(4))
+			machineCodes.append(bit)
+			continue;
+
+		pat = re.compile('(LI|B|ADDI)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
+		mat = pat.match(line)
+		if mat:
+			print (str(num) + ' : ' + mat.group(0))
+			bit = typeLI(mat.group(1), mat.group(2), mat.group(3))
+			machineCodes.append(bit)
+			continue
+
+		pat = re.compile('(BE|BLT|BLE|BNE)\s+?(-??\d+)')
+		mat = pat.match(line)
+		if mat:
+			print (str(num) + ' : ' + mat.group(0))
+			bit = typeBE(mat.group(1), mat.group(2))
+			machineCodes.append(bit)
+			continue
+
+		flag = False
+		
+		break
+
+	
+	if flag:
+		print('Success Assembling!!')
+	else:
+		print(str(num) + ' : Error! (line:' + str(num) + ')')
+		machineCodes.append('Error')
+
+
 	return machineCodes
 
 
