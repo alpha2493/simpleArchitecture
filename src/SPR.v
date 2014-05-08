@@ -1,4 +1,4 @@
-module StackPointerRegister(
+module SPR(
    input [15:0]  writeData,
    input 	 inc, dec, write, clock,
    output [15:0] Data);
@@ -18,4 +18,4 @@ module StackPointerRegister(
    end
 
    assign Data = register;
-endmodule; // StackPointerRegister
+endmodule // SPR
