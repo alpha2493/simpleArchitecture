@@ -4,10 +4,15 @@ module JumpJudgement(
    input [3:0] FLAG,
    output      PC_load_out);
 
-   wire        S, Z, C, V;
+   wire        S, Z, /*C,*/ V;
    reg 	       pcl;
 
-   assign {S, Z, C, V} = FLAG;
+   //assign {S, Z, C, V} = FLAG;
+	assign S = FLAG[3];
+	assign Z = FLAG[2];
+	//assign C = FLAG[1];
+	assign V = FLAG[0];
+	
       
    always @* begin
       if (op2 == 3'b111)
@@ -22,7 +27,7 @@ module JumpJudgement(
 	pcl = PC_load_in;
       else
 	pcl = 1'b0;
-   end // always @ (PC_load_in or cond)
+   end // always @*
    
    assign PC_load_out = pcl;
    
