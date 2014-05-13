@@ -1,5 +1,7 @@
-LI [0] 3
-LI [1] 6
-LI [2] 0
-ADD [0] [1]
-ST [0] 0([2])
+#haha
+label: //lkjfl
+
+label3: ADD [0] [1]
+
+BE label3
+
