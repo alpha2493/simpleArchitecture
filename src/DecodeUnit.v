@@ -1,6 +1,7 @@
 module DecodeUnit(
-   input [15:0] COMMAND,
+   input [15:0] COMMAND, BeforeCOMMAND, TwoBeforeCOMMAND,
    output 	signEx,
+   output       one_A, one_B, two_A, two_B,
    output 	AR_MUX, BR_MUX,
    output [3:0] S_ALU,
    output 	INPUT_MUX, writeEnable,
@@ -25,8 +26,7 @@ module DecodeUnit(
    localparam 	INON = 4'b1111;
 
    reg [2:0] 	wrAdr; 	
-   reg 		wr, pcl, in, adr, ar, br, se, wren;
-
+   reg 		wr, pcl, in, adr, ar, br, se, wren, oA, oB, tA, tB;
 
    //wrAdr
    always @ (COMMAND) begin
@@ -60,7 +60,57 @@ module DecodeUnit(
 	se <= 1;
       else
 	se <= 0;
-   end   
+   end
+
+   //one_A
+   always @ (COMMAND or BeforeCOMMAND) begin
+      if ((BeforeCOMMAND[15:14] == 2'b11 && BeforeCOMMAND[7:4] >= 4'b0000 && BeforeCOMMAND[7:4] <= 4'b1100 && BeforeCOMMAND[7:4] != 4'b0101 && BeforeCOMMAND[7:4] != 0111)
+          && ((COMMAND[15:14] == 2'b11 && ((COMMAND[7:4] >= 4'b0000 && COMMAND[7:4] <= 4'b0110)
+                                           || COMMAND[7:4] == 4'b1101))
+              || (COMMAND[15:14] == 2'b01))
+	  && COMMAND[10:8] == BeforeCOMMAND[13:11])
+         oA <= 1'b1;
+      else
+         oA <= 1'b0;
+   end
+
+   //two_A
+   always @ (COMMAND or TwoBeforeCOMMAND) begin
+      if ((TwoBeforeCOMMAND[15:14] == 2'b11 && TwoBeforeCOMMAND[7:4] >= 4'b0000 && TwoBeforeCOMMAND[7:4] <= 4'b1100 && COMMAND[7:4] != 4'b0101 && TwoBeforeCOMMAND[7:4] != 0111)
+          && ((COMMAND[15:14] == 2'b11 && ((COMMAND[7:4] >= 4'b0000 && COMMAND[7:4] <= 4'b0110)
+                                           || COMMAND[7:4] == 4'b1101))
+              || (COMMAND[15:14] == 2'b01))
+	  && COMMAND[10:8] == TwoBeforeCOMMAND[13:11])
+         tA <= 1'b1;
+      else
+         tA <= 1'b0;
+   end
+
+   //one_B
+   always @ (COMMAND or BeforeCOMMAND) begin
+      if ((BeforeCOMMAND[15:14] == 2'b11 && BeforeCOMMAND[7:4] >= 4'b0000 && BeforeCOMMAND[7:4] <= 4'b1100 && BeforeCOMMAND[7:4] != 4'b0101 && BeforeCOMMAND[7:4] != 0111)
+          && ((COMMAND[15:14] == 2'b11 && ((COMMAND[7:4] >= 4'b0000 && COMMAND[7:4] <= 4'b0101)
+                                           || (COMMAND[7:4] >= 4'b1000 && COMMAND[7:4] <= 4'b1011)))
+              || (COMMAND[15:14] == 2'b01)
+              || (COMMAND[15:14] == 2'b00))
+	  && COMMAND[10:8] == BeforeCOMMAND[10:8])
+         oB <= 1'b1;
+      else
+         oB <= 1'b0;
+   end
+
+   //two_B
+   always @ (COMMAND or TwoBeforeCOMMAND) begin
+      if ((TwoBeforeCOMMAND[15:14] == 2'b11 && TwoBeforeCOMMAND[7:4] >= 4'b0000 && TwoBeforeCOMMAND[7:4] <= 4'b1100 && TwoBeforeCOMMAND[7:4] != 4'b0101 && TwoBeforeCOMMAND[7:4] != 0111)
+          && ((COMMAND[15:14] == 2'b11 && ((COMMAND[7:4] >= 4'b0000 && COMMAND[7:4] <= 4'b0101)
+                                           || (COMMAND[7:4] >= 4'b1000 && COMMAND[7:4] <= 4'b1011)))
+              || (COMMAND[15:14] == 2'b01)
+              || (COMMAND[15:14] == 2'b00))
+	  && COMMAND[10:8] == TwoBeforeCOMMAND[10:8])
+         tB <= 1'b1;
+      else
+         tB <= 1'b0;
+   end
 
    //write
    always @ (COMMAND) begin
@@ -145,6 +195,10 @@ module DecodeUnit(
    assign INPUT_MUX = in;
    assign ADR_MUX = adr;
    assign signEx = se;
+   assign one_A = oA;
+   assign one_B = oB;
+   assign two_A = tA;
+   assign two_B = tB;
    assign writeEnable = wren;   
    
 endmodule // DecodeUnit
