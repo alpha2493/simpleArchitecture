@@ -1,11 +1,11 @@
 module DecodeUnit(
    input [15:0] COMMAND,
    output 	signEx,
-   output 	AR_MUX, BR_MUX, SPC_MUX, AB_MUX, MW_MUX
+   output 	AR_MUX, BR_MUX, SPC_MUX, AB_MUX, MW_MUX,
    output [3:0] S_ALU,
    output 	SP_Sw, MAD_MUX, INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
-   output 	ADR_MUX, write, PC_load, inc, dec, SP_write
+   output 	ADR_MUX, write, PC_load, inc, dec, SP_write,
    output [2:0] cond, op2
 );
 
@@ -79,9 +79,9 @@ module DecodeUnit(
    //dec
    always @ (COMMAND) begin
       if (COMMAND[15:8] == 8'b10111111)
-	dec <= 1;
+	d <= 1;
       else
-	dec <= 0;
+	d <= 0;
    end
 
    //spw
