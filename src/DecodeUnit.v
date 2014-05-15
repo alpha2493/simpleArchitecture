@@ -1,6 +1,6 @@
 module DecodeUnit(
    input [15:0] COMMAND,
-   output 	signEx,
+   output 	out, signEx,
    output 	AR_MUX, BR_MUX,
    output [3:0] S_ALU,
    output 	INPUT_MUX, writeEnable,
@@ -25,7 +25,7 @@ module DecodeUnit(
    localparam 	INON = 4'b1111;
 
    reg [2:0] 	wrAdr; 	
-   reg 		wr, pcl, in, adr, ar, br, se, wren;
+   reg 		wr, pcl, in, adr, ar, br, se, wren, o;
 
 
    //wrAdr
@@ -60,7 +60,15 @@ module DecodeUnit(
 	se <= 1;
       else
 	se <= 0;
-   end   
+   end
+
+   //out
+   always @ (COMMAND) begin
+      if (COMMAND[15:14] == 2'b11 && COMMAND[7:4] == 4'b1101)
+	o <= 1;
+      else
+	o <= 0;
+   end
 
    //write
    always @ (COMMAND) begin
@@ -145,6 +153,7 @@ module DecodeUnit(
    assign INPUT_MUX = in;
    assign ADR_MUX = adr;
    assign signEx = se;
+   assign out = o;
    assign writeEnable = wren;   
    
 endmodule // DecodeUnit
