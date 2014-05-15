@@ -1,12 +1,12 @@
 module DecodeUnit(
    input [15:0] COMMAND,
-   output 	signEx,
-   output 	AR_MUX, BR_MUX, SPC_MUX, AB_MUX, MW_MUX,
+   output 	AR_MUX, BR_MUX,
    output [3:0] S_ALU,
-   output 	SP_Sw, MAD_MUX, INPUT_MUX, writeEnable,
+   output 	INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
-   output 	ADR_MUX, write, PC_load, inc, dec, SP_write,
-   output [2:0] cond, op2
+   output 	ADR_MUX, write, PC_load, 
+   output [2:0] cond, op2,
+   output 	SP_write, inc, dec, SP_Sw, MAD_MUX, SPC_MUX, MW_MUX, AB_MUX, signEx
 );
 
    reg [3:0] 	Select_ALU;
