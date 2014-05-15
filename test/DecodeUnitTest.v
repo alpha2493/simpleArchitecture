@@ -1,12 +1,11 @@
 module DECODEUNITTEST;
    reg [15:0] command;
    wire [3:0] s_alu;
-   wire       ar, br, in, adr, w, we, pcl, se;
+   wire       ar, br, in, adr, w, we, pcl, se, spc, ab, mw, inc, dec, spw, sps, mad;
    wire [2:0]  wAdr;
-   wire [2:0] cond;   
-	       
+   wire [2:0] cond, op2;
 
-   DecodeUnit cu (command, se, ar, br, s_alu, in, we, wAdr, adr, w, pcl, cond);
+   DecodeUnit cu (command, se, ar, br, spc, ab, mw, s_alu, sps, mad, in, we, wAdr, adr, w, pcl, int, dec, spw, cond, op2);
    
 
    initial begin

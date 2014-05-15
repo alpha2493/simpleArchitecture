@@ -1,11 +1,11 @@
 module DecodeUnit(
    input [15:0] COMMAND,
    output 	out, signEx,
-   output 	AR_MUX, BR_MUX,
+   output 	AR_MUX, BR_MUX, SPC_MUX, AB_MUX, MW_MUX,
    output [3:0] S_ALU,
-   output 	INPUT_MUX, writeEnable,
+   output 	SP_Sw, MAD_MUX, INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
-   output 	ADR_MUX, write, PC_load,
+   output 	ADR_MUX, write, PC_load, inc, dec, SP_write,
    output [2:0] cond, op2
 );
 
@@ -25,9 +25,73 @@ module DecodeUnit(
    localparam 	INON = 4'b1111;
 
    reg [2:0] 	wrAdr; 	
-   reg 		wr, pcl, in, adr, ar, br, se, wren, o;
+   reg 		wr, pcl, in, adr, ar, br, se, wren, o, spc, ab, mw, sps, mad, i, d, spw;
 
 
+   //SPC_MUX
+   always @ (COMMAND) begin
+      if (COMMAND[15:11] == 5'b10011)
+	spc <= 1'b1;
+      else
+	spc <= 1'b0;
+   end
+
+   //AB_MUX
+   always @ (COMMAND) begin
+      if (COMMAND[15:14] == 2'b01)
+	ab <= 1;
+      else
+	ab <= 0;
+   end
+
+   //MW_MUX
+   always @ (COMMAND) begin
+      if (COMMAND[15:8] == 8'b10111110)
+	mw <= 0;
+      else
+	mw <= 1;
+   end
+
+   //SP_Sw
+   always @ (COMMAND) begin
+      if (COMMAND[15:8] == 8'b10111111)
+	sps <= 0;
+      else
+	sps <= 1;
+   end
+
+   //MAD_MUX
+   always @ (COMMAND) begin
+      if (COMMAND[15:11] == 5'b10010 || COMMAND[15:9] == 7'b1011111)
+	mad <= 0;
+      else
+	mad <=1;
+   end
+
+   //inc
+   always @ (COMMAND) begin
+      if (COMMAND[15:11] == 5'b10010)
+	i <= 1;
+      else
+	i <= 0;
+   end
+
+   //dec
+   always @ (COMMAND) begin
+      if (COMMAND[15:8] == 8'b10111111)
+	d <= 1;
+      else
+	d <= 0;
+   end
+
+   //spw
+   always @ (COMMAND) begin
+      if (COMMAND[15:11] == 5'b10011)
+	spw <= 1;
+      else
+	spw <= 0;
+   end
+   
    //wrAdr
    always @ (COMMAND) begin
      if (COMMAND[15:14] == 2'b00)
@@ -155,5 +219,13 @@ module DecodeUnit(
    assign signEx = se;
    assign out = o;
    assign writeEnable = wren;   
-   
+   assign SPC_MUX = spc;
+   assign AB_MUX = ab;
+   assign MW_MUX = mw;
+   assign SP_Sw = sps;
+   assign MAD_MUX = mad;
+   assign inc = i;
+   assign dec = d;
+   assign SP_write = spw;
+      
 endmodule // DecodeUnit
