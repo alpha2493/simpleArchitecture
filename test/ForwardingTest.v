@@ -2,8 +2,9 @@ module FORWARDINGTEST;
    reg [15:0] one, two;
    reg 	      one_A, one_B, two_A, two_B;
    wire [15:0] outA, outB;
+   wire        forwarda, forwardb;
    
-   Forwarding fw (one, two, one_A, one_B, two_A, two_B, outA, outB);
+   Forwarding fw (one, two, one_A, one_B, two_A, two_B, forwarda, forwardb, outA, outB);
 
    initial begin
       $dumpfile("ForwadingTest.vcd");
