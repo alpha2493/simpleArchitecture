@@ -28,7 +28,7 @@ module DecodeUnitRegisterThree(
    assign write_OUT = write;
    assign PC_load_OUT = pcload;
    assign SPR_w_OUT = sprw;
-   assign SPR_i_OUT = sprd;
+   assign SPR_i_OUT = spri;
    assign SPR_d_OUT = sprd;
    
 endmodule // DecodeUnitRegisterThree
