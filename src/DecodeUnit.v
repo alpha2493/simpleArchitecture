@@ -31,7 +31,7 @@ module DecodeUnit(
    //FLAG_WRITE
    always @ (COMMAND) begin
       if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] >= 4'b0000 && COMMAND[7:4] <= 4'b1011 && COMMAND[7:4] != 4'b0111)
-	  || COMMAND[15:11] = 5'b10001)
+	  || COMMAND[15:11] == 5'b10001)
 	flw <= 1'b1;
       else
 	flw <= 1'b0;
