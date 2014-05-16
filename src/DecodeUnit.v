@@ -6,7 +6,7 @@ module DecodeUnit(
    output 	ADR_MUX, write, PC_load, 
    output 	SP_write, inc, dec,
    output [2:0] cond, op2,
-   ouput        SP_Sw, MAD_MUX, AR_MUX, BR_MUX,
+   output       SP_Sw, MAD_MUX, AR_MUX, BR_MUX,
    output [3:0] S_ALU,
    output       SPC_MUX, MW_MUX, AB_MUX, signEx
 );
