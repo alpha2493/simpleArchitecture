@@ -24,7 +24,6 @@ module DecodeUnit(
    localparam 	ISRA = 4'b1011;
    localparam 	IIDT = 4'b1100;
    localparam 	INON = 4'b1111;
-
    reg [2:0] 	wrAdr; 	
    reg 		wr, pcl, in, adr, ar, br, se, wren, spc, ab, mw, sps, mad, i, d, spw, oA, oB, tA, tB;
 
@@ -113,7 +112,7 @@ module DecodeUnit(
    //wren
    always @ (COMMAND) begin
       if (COMMAND[15:14] == 2'b01 || COMMAND[15:11] == 5'b10010 || COMMAND[15:11] == 5'b10010 ||
-	  COMMAND[15:11] == 5'b10110 || COMMAND[15:8] = 8'b10111110)
+	  COMMAND[15:11] == 5'b10110 || COMMAND[15:8] == 8'b10111110)
 	wren <= 1;
       else
 	wren <= 0;
