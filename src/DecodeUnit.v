@@ -23,13 +23,13 @@ module DecodeUnit(
    localparam 	ISRL = 4'b1010;
    localparam 	ISRA = 4'b1011;
    localparam 	IIDT = 4'b1100;
-   localparam 	INON = 4'b1111;
+  localparam 	INON = 4'b1111;
    reg [2:0] 	wrAdr; 	
    reg 		wr, pcl, in, adr, ar, br, se, wren, o, spc, ab, mw, sps, mad, i, d, spw, oA, oB, tA, tB;
 
    //SPC_MUX
    always @ (COMMAND) begin
-      if (COMMAND[15:11] == 5'b10011)
+      if (COMMAND[15:11] == 5'b10011 || COMMAND[15:11] == 5'b10101)
 	spc <= 1'b1;
       else
 	spc <= 1'b0;
@@ -213,7 +213,10 @@ module DecodeUnit(
 
    //ADR_MUX
    always @ (COMMAND) begin
-      if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b1011) ||COMMAND[15:14] == 2'b10)
+      //if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b1011) || COMMAND[15:14] == 2'b10)
+      if ((COMMAND[15:14] == 2'b11 && COMMAND[7:4] <= 4'b1011) || 
+	  (COMMAND[15:14] == 2'b10 && COMMAND[13:11] <= 3'b100) ||
+	  (COMMAND[15:11] == 5'b10111 && COMMAND[10:8] != 3'b111))
 	adr <= 1;
       else
 	adr <= 0;
@@ -221,7 +224,8 @@ module DecodeUnit(
 
    //BR_MUX
    always @ (COMMAND) begin
-      if (COMMAND[15:14] != 2'b10 || COMMAND[13] != 1'b1)
+      //(COMMAND[15:14] != 2'b10 || COMMAND[13] != 1'b1)
+      if (COMMAND[15:14] == 2'b11 || COMMAND[15:11] == 5'b10001 || COMMAND[15:14] == 2'b01)
 	br <= 1;
       else
 	br <= 0;
@@ -249,6 +253,8 @@ module DecodeUnit(
 	Select_ALU <= IIDT;
       else if (COMMAND[15:11] == 5'b10001)//ADDI
 	Select_ALU <= IADD;
+      else if (COMMAND[15:11] == 5'b10101 || COMMAND[15:11] == 5'b10110)//GET; SET;
+	Select_ALU <= ISUB;
       else if (COMMAND[15:11] == 5'b10100)//分岐
 	Select_ALU <= IADD;
       else if (COMMAND[15:11] == 5'b10111)//条件分岐
