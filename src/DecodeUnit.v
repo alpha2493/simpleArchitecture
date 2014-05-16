@@ -24,7 +24,6 @@ module DecodeUnit(
    localparam 	ISRA = 4'b1011;
    localparam 	IIDT = 4'b1100;
    localparam 	INON = 4'b1111;
-
    reg [2:0] 	wrAdr; 	
    reg 		wr, pcl, in, adr, ar, br, se, wren, spc, ab, mw, sps, mad, i, d, spw, oA, oB, tA, tB;
 
