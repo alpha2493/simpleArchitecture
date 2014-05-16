@@ -161,7 +161,8 @@ module DecodeUnit(
 
    //one_B
    always @ (COMMAND or BeforeCOMMAND) begin
-      if ((BeforeCOMMAND[15:14] == 2'b11 && BeforeCOMMAND[7:4] >= 4'b0000 && BeforeCOMMAND[7:4] <= 4'b1100 && BeforeCOMMAND[7:4] != 4'b0101 && BeforeCOMMAND[7:4] != 0111)
+      if (((BeforeCOMMAND[15:14] == 2'b11 && BeforeCOMMAND[7:4] >= 4'b0000 && BeforeCOMMAND[7:4] <= 4'b1100 && BeforeCOMMAND[7:4] != 4'b0101 && BeforeCOMMAND[7:4] != 0111)
+           || BeforeCOMMAND[15:11] == 5'b10001)
           && ((COMMAND[15:14] == 2'b11 && ((COMMAND[7:4] >= 4'b0000 && COMMAND[7:4] <= 4'b0101)
                                            || (COMMAND[7:4] >= 4'b1000 && COMMAND[7:4] <= 4'b1011)))
               || (COMMAND[15:14] == 2'b01)
@@ -174,7 +175,8 @@ module DecodeUnit(
 
    //two_B
    always @ (COMMAND or TwoBeforeCOMMAND) begin
-      if ((TwoBeforeCOMMAND[15:14] == 2'b11 && TwoBeforeCOMMAND[7:4] >= 4'b0000 && TwoBeforeCOMMAND[7:4] <= 4'b1100 && TwoBeforeCOMMAND[7:4] != 4'b0101 && TwoBeforeCOMMAND[7:4] != 0111)
+      if (((TwoBeforeCOMMAND[15:14] == 2'b11 && TwoBeforeCOMMAND[7:4] >= 4'b0000 && TwoBeforeCOMMAND[7:4] <= 4'b1100 && TwoBeforeCOMMAND[7:4] != 4'b0101 && TwoBeforeCOMMAND[7:4] != 0111)
+           || BeforeCOMMAND[15:11] == 5'b10001)
           && ((COMMAND[15:14] == 2'b11 && ((COMMAND[7:4] >= 4'b0000 && COMMAND[7:4] <= 4'b0101)
                                            || (COMMAND[7:4] >= 4'b1000 && COMMAND[7:4] <= 4'b1011)))
               || (COMMAND[15:14] == 2'b01)
