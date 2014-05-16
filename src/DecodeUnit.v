@@ -1,13 +1,14 @@
 module DecodeUnit(
    input [15:0] TwoBeforeCOMMAND, BeforeCOMMAND, COMMAND,
    output       out, one_A, one_B, two_A, two_B,
-   output 	AR_MUX, BR_MUX,
-   output [3:0] S_ALU,
    output 	INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
    output 	ADR_MUX, write, PC_load, 
+   output 	SP_write, inc, dec,
    output [2:0] cond, op2,
-   output 	SP_write, inc, dec, SP_Sw, MAD_MUX, SPC_MUX, MW_MUX, AB_MUX, signEx
+   output       SP_Sw, MAD_MUX, AR_MUX, BR_MUX,
+   output [3:0] S_ALU,
+   output       SPC_MUX, MW_MUX, AB_MUX, signEx
 );
 
    reg [3:0] 	Select_ALU;
