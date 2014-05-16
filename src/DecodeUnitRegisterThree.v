@@ -4,8 +4,9 @@ module DecodeUnitRegisterThree(
    input 	ADR_MUX_IN, write_IN, PC_load_IN,
    input 	SPR_w_IN, SPR_i_IN, SPR_d_IN,
    output [2:0] writeAd_OUT,
-   output 	ADR_MUX_OUT, write_OUT, PC_load_OUT,
-   output 	SPR_w_OUT, SPR_i_OUT, SPR_d_OUT);
+   output       write_OUT, PC_load_OUT,
+   output 	SPR_w_OUT, SPR_i_OUT, SPR_d_OUT,
+   output 	ADR_MUX_OUT);
    
 
    reg [2:0]    writeAd;
