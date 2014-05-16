@@ -2,8 +2,7 @@ module ALU (
    input signed [15:0] DATA_A, DATA_B,
    input [3:0] 	       S_ALU,
    output [15:0]       ALU_OUT,
-   output [3:0]        FLAG_OUT,
-   output 	       FLAG_WRITE);
+   output [3:0]        FLAG_OUT);
 
    localparam IADD = 4'b0000;
    localparam ISUB = 4'b0001;
@@ -48,5 +47,4 @@ module ALU (
    assign V = (((S_ALU == IADD) && (DATA_A[15] == DATA_B[15]) && (DATA_A[15] != result[15]))
                || ((S_ALU == ISUB) && (DATA_A[15] != DATA_B[15]) && (DATA_A[15] != result[15]))) ? 1'b1 : 1'b0;
    assign FLAG_OUT = {S, Z, result[16], V};
-   assign FLAG_WRITE = (S_ALU != INON) ? 1'b1 : 1'b0;
 endmodule

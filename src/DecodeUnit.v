@@ -6,7 +6,7 @@ module DecodeUnit(
    output 	ADR_MUX, write, PC_load, 
    output 	SP_write, inc, dec,
    output [2:0] cond, op2,
-   output       SP_Sw, MAD_MUX, AR_MUX, BR_MUX,
+   output       SP_Sw, MAD_MUX, FLAG_WRITE, AR_MUX, BR_MUX,
    output [3:0] S_ALU,
    output       SPC_MUX, MW_MUX, AB_MUX, signEx
 );
@@ -26,7 +26,15 @@ module DecodeUnit(
    localparam 	IIDT = 4'b1100;
   localparam 	INON = 4'b1111;
    reg [2:0] 	wrAdr; 	
-   reg 		wr, pcl, in, adr, ar, br, se, wren, o, spc, ab, mw, sps, mad, i, d, spw, oA, oB, tA, tB;
+   reg 		wr, pcl, in, adr, ar, br, se, wren, o, spc, ab, mw, sps, mad, i, d, spw, oA, oB, tA, tB, flw;
+
+   //FLAG_WRITE
+   always @ (COMMAND) begin
+      if (COMMAND[15:14] == 2'b11 && COMMAND[7:4] >= 4'b0000 && COMMAND[7:4] <= 4'b1011 && COMMAND[7:4] != 4'b0111)
+	flw <= 1'b1;
+      else
+	flw <= 1'b0;
+   end
 
    //SPC_MUX
    always @ (COMMAND) begin
@@ -291,5 +299,6 @@ module DecodeUnit(
    assign inc = i;
    assign dec = d;
    assign SP_write = spw;
+   assign FLAG_WRITE = flw;
       
 endmodule // DecodeUnit

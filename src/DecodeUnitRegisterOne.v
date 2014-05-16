@@ -5,7 +5,7 @@ module DecodeUnitRegisterOne(
    input 	ADR_MUX_IN, write_IN, PC_load_IN,
    input 	SPR_w_IN, SPR_i_IN, SPR_d_IN,
    input [2:0] 	cond_IN, op2_IN,
-   input 	SW_IN, MAD_MUX_IN, AR_IN, BR_IN,
+   input 	SW_IN, MAD_MUX_IN, FLAG_WRITE_IN, AR_IN, BR_IN,
    input [3:0] 	ALU_IN,
    input 	SPC_MUX_IN, MX_MUX_IN, AB_MUX_IN,
    output       One_A_OUT, One_B_OUT, Two_A_OUT, Two_B_OUT,
@@ -14,7 +14,7 @@ module DecodeUnitRegisterOne(
    output 	ADR_MUX_OUT, write_OUT, PC_load_OUT,
    output 	SPR_w_OUT, SPR_i_OUT, SPR_d_OUT,
    output [2:0] cond_OUT, op2_OUT,
-   output 	SW_OUT, MAD_MUX_OUT, AR_OUT, BR_OUT,
+   output 	SW_OUT, MAD_MUX_OUT, FLAG_WRITE_OUT, AR_OUT, BR_OUT,
    output [3:0] ALU_OUT,
    output 	SPC_MUX_OUT, MX_MUX_OUT, AB_MUX_OUT);
 
@@ -26,7 +26,7 @@ module DecodeUnitRegisterOne(
    reg          adrmux, write, pcload;
    reg [2:0] 	cond, opera2;
    reg 		sprw,spri,sprd;
-   reg 		sw, mad;
+   reg 		sw, mad, flw;
    reg 		spc, mx, ab;
 
    always @ (posedge CLK) begin
@@ -53,6 +53,7 @@ module DecodeUnitRegisterOne(
       spc <= SPC_MUX_IN;
       mx <= MX_MUX_IN;
       ab <= AB_MUX_IN;
+      flw <= FLAG_WRITE_IN;
    end // always @ (posedge CLK)
    
    assign One_A_OUT = oa;
@@ -75,6 +76,7 @@ module DecodeUnitRegisterOne(
    assign SPR_d_OUT = sprd;
    assign SW_OUT = sw;
    assign MAD_MUX_OUT = mad;
+   assign FLAG_WRITE_OUT = flw;
    assign SPC_MUX_OUT = spc;
    assign MX_MUX_OUT = mx;
    assign AB_MUX_OUT = ab;
