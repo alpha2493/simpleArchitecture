@@ -3,14 +3,14 @@ module DecodeUnitRegisterTwo(
    input 	input_IN, wren_IN,
    input [2:0] 	writeAd_IN,
    input 	ADR_MUX_IN, write_IN, PC_load_IN,
-   input [2:0] 	cond_IN, op2_IN,
    input 	SPR_w_IN, SPR_i_IN, SPR_d_IN,
+   input [2:0] 	cond_IN, op2_IN,
    input 	SW_IN, MAD_MUX_IN,
    output 	input_OUT, wren_OUT,
    output [2:0] writeAd_OUT,
    output 	ADR_MUX_OUT, write_OUT, PC_load_OUT,
-   output [2:0] cond_OUT, op2_OUT,
    output 	SPR_w_OUT, SPR_i_OUT, SPR_d_OUT,
+   output [2:0] cond_OUT, op2_OUT,
    output 	SW_OUT, MAD_MUX_OUT);
    
    reg          in, wren;
