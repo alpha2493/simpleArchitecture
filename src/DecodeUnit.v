@@ -1,5 +1,5 @@
 module DecodeUnit(
-   input [15:0] COMMAND, BeforeCOMMAND, TwoBeforeCOMMAND,
+   input [15:0] TwoBeforeCOMMAND, BeforeCOMMAND, COMMAND,
    output       out, one_A, one_B, two_A, two_B,
    output 	AR_MUX, BR_MUX,
    output [3:0] S_ALU,

@@ -46,7 +46,7 @@ module DecodeUnitRegisterTwo(
    assign cond_OUT = cond;
    assign op2_OUT = opera2;
    assign SPR_w_OUT = sprw;
-   assign SPR_i_OUT = sprd;
+   assign SPR_i_OUT = spri;
    assign SPR_d_OUT = sprd;
    assign SW_OUT = sw;
    assign MAD_MUX_OUT = mad;
