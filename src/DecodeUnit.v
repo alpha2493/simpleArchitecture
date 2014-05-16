@@ -112,7 +112,8 @@ module DecodeUnit(
    
    //wren
    always @ (COMMAND) begin
-      if (COMMAND[15:14] == 2'b01)
+      if (COMMAND[15:14] == 2'b01 || COMMAND[15:11] == 5'b10010 || COMMAND[15:11] == 5'b10010 ||
+	  COMMAND[15:11] == 5'b10110 || COMMAND[15:8] = 8'b10111110)
 	wren <= 1;
       else
 	wren <= 0;
@@ -180,7 +181,8 @@ module DecodeUnit(
    always @ (COMMAND) begin
       if ((COMMAND[15:14] == 2'b11 && (COMMAND[7:4] <= 4'b1100 && COMMAND[7:4] != 4'b0101)) ||
 	  COMMAND[15:14] == 2'b00 ||
-	  COMMAND[15:12] == 5'b1000)
+	  COMMAND[15:12] == 4'b1000 ||
+	  COMMAND[15:11] == 5'b10101)
 	wr <= 1;
       else
 	wr <=0;
