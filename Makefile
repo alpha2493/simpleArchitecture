@@ -1,7 +1,7 @@
 #Makefile
-all:ALU_test.out MUX_test.out SignExtension_test.out ControlUnit_test.out DecodeUnit_test.out Forwarding_test.out Register_test.out
+all:ALU_test.out MUX_test.out SignExtension_test.out ControlUnit_test.out DecodeUnit_test.out Forwarding_test.out Register_test.out StallJudgement_test.out
 
-vcd: aluTest.vcd muxTest.vcd singextensionTest.vcd controlUnitTest.vcd decodeUnitTest.vcd forwardingTest.vcd registerTest.vcd
+vcd: aluTest.vcd muxTest.vcd singextensionTest.vcd controlUnitTest.vcd decodeUnitTest.vcd forwardingTest.vcd registerTest.vcd stallJudgementTest.vcd
 
 aluTest.vcd: ALU_test.out
 	vvp ALU_test.out
@@ -17,6 +17,8 @@ forwardingTest.vcd: Forwarding_test.out
 	vvp Forwarding_test.out
 registerTest.vcd: Register_test.out
 	vvp Register_test.out
+stallJudgementTest.vcd: StallJudgement_test.out
+	vvp StallJudgement_test.out
 
 ALU_test.out: src/ALU.v test/ALUTest.v
 	iverilog -o ALU_test.out -s ALUTEST src/ALU.v test/ALUTest.v
@@ -32,6 +34,8 @@ Forwarding_test.out: src/Forwarding.v test/ForwardingTest.v src/Multiplexer.v
 	iverilog -o Forwarding_test.out -s FORWARDINGTEST src/Forwarding.v test/ForwardingTest.v src/Multiplexer.v
 Register_test.out: src/Register.v test/RegisterTest.v
 	iverilog -o Register_test.out -s REGISTERTEST src/Register.v test/RegisterTest.v
+StallJudgement_test.out: src/StallJudgement.v test/StallJudgementTest.v
+	iverilog -o StallJudgement_test.out -s STALLJUDGEMENTTEST src/StallJudgement.v test/StallJudgementTest.v
 
 clean:
 	rm -f *.out *.vcd
