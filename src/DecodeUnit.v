@@ -237,7 +237,7 @@ module DecodeUnit(
    //BR_MUX
    always @ (COMMAND) begin
       //(COMMAND[15:14] != 2'b10 || COMMAND[13] != 1'b1)
-      if (COMMAND[15:14] == 2'b11 || COMMAND[15:11] == 5'b10001 || COMMAND[15:14] == 2'b01)
+      if (COMMAND[15:14] == 2'b11 || COMMAND[15:11] == 5'b10001 || COMMAND[15:14] == 2'b01 || COMMAND[15:14] == 2'b00)
 	br <= 1;
       else
 	br <= 0;
