@@ -5,8 +5,8 @@ module ForwardingJudgment(
 			  input [2:0] beforeop2,beforecond,beforeop3,
 			  input [1:0] twobeforeop1,
 			  input [2:0] twobeforeop2,twobeforecond,twobeforeop3,
-			   output      one_A, one_B, two_A, two_B);
-
+                          output      one_A, one_B, two_A, two_B);
+   
    reg 				       oA, oB, tA, tB;
    
    //one_A
