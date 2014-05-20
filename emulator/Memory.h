@@ -11,7 +11,7 @@ class Memory {
   std::array<std::string, 2048> memory;
   void setMemory(const int address, const std::string & operand);
  public:
- Memory() : memory() { initialize("program.txt"); }
+ Memory() : memory() { initialize("program"); }
  Memory(const char str[]) : memory() { initialize(str); }
  Memory(const std::string & str) : memory() { initialize(str); }
   void reset();
@@ -20,7 +20,7 @@ class Memory {
 
 class DataMemory : public Memory {
  public:
- DataMemory() : Memory("data.txt") { }
+ DataMemory() : Memory("data") { }
  DataMemory(const std::string & str) : Memory(str) { }
   void setData(const int address, const std::string & operand);
   void show();
