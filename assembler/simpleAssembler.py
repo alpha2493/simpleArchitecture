@@ -5,183 +5,269 @@ import re
 import argparse
 
 def signExtension(d, n):
-	if int(d) >= 0:
-		return format(int(d), 'b').zfill(n)
-	else:
-		return format((2 ** n) + int(d), 'b')
+    if int(d) >= 0:
+        return format(int(d), 'b').zfill(n)
+    else:
+        return format((2 ** n) + int(d), 'b')
 
 
 
 def typeADD(co, rd, rs):
 
-	rs = format(int(rs), 'b').zfill(3)
-	rd = format(int(rd), 'b').zfill(3)
-	d = '0000'
-	
-	if co == 'ADD':
-		op3 = '0000'
-	elif co == 'SUB':
-		op3 = '0001'
-	elif co == 'AND':
-		op3 = '0010'
-	elif co == 'OR':
-		op3 = '0011'
-	elif co == 'XOR':
-		op3 = '0100'
-	elif co == 'CMP':
-		op3 = '0101'
-	elif co == 'MOV':
-		op3 = '0110'
+    rs = format(int(rs), 'b').zfill(3)
+    rd = format(int(rd), 'b').zfill(3)
+    d = '0000'
 
-	return '11' + rs + rd + op3 + d
+    if co == 'ADD':
+        op3 = '0000'
+    elif co == 'SUB':
+        op3 = '0001'
+    elif co == 'AND':
+        op3 = '0010'
+    elif co == 'OR':
+        op3 = '0011'
+    elif co == 'XOR':
+        op3 = '0100'
+    elif co == 'CMP':
+        op3 = '0101'
+    elif co == 'MOV':
+        op3 = '0110'
+
+    return '11' + rs + rd + op3 + d
 
 
 
 def typeSLL(co, rd, d):
-	
-	rs = '000'
-	rd = format(int(rd), 'b').zfill(3)
-	d = signExtension(d, 4)
 
-	if co == 'SLL':
-		op3 = '1000'
-	elif co == 'SLR':
-		op3 = '1001'
-	elif co == 'SRL':
-		op3 = '1010'
-	elif co == 'SRA':
-		op3 = '1011'
-	
-	return '11' + rs + rd + op3 + d
+    rs = '000'
+    rd = format(int(rd), 'b').zfill(3)
+    d = signExtension(d, 4)
+
+    if co == 'SLL':
+        op3 = '1000'
+    elif co == 'SLR':
+        op3 = '1001'
+    elif co == 'SRL':
+        op3 = '1010'
+    elif co == 'SRA':
+        op3 = '1011'
+
+    return '11' + rs + rd + op3 + d
 
 
 
 def typeLD(co, ra, d, rb):
 
-	ra = format(int(ra), 'b').zfill(3)
-	rb = format(int(rb), 'b').zfill(3)
-	d = signExtension(d, 8)
+    ra = format(int(ra), 'b').zfill(3)
+    rb = format(int(rb), 'b').zfill(3)
+    d = signExtension(d, 8)
 
-	if co == 'LD':
-		op1 = '00'
-	else:
-		op1 = '01'
+    if co == 'LD':
+        op1 = '00'
+    else:
+        op1 = '01'
 
-	return op1 + ra + rb + d
+    return op1 + ra + rb + d
 
 
 
 def typeLI(co, rb, d):
 
-	rb = format(int(rb), 'b').zfill(3)
-	d = signExtension(d, 8)
+    rb = format(int(rb), 'b').zfill(3)
+    d = signExtension(d, 8)
 
-	if co == 'LI':
-		op2 = '000'
-	elif co == 'ADDI':
-		op2 = '001'
-	elif co == 'B':
-		op2 = '100'
+    if co == 'LI':
+        op2 = '000'
+    elif co == 'ADDI':
+        op2 = '001'
+    elif co == 'B':
+        op2 = '100'
 
-	return '10' + op2 + rb + d
+    return '10' + op2 + rb + d
 
 
 
 def typeBE(co, d):
 
-	d = signExtension(d, 8)
+    d = signExtension(d, 8)
 
-	if co == 'BE':
-		cond = '000'
-	elif co == 'BLT':
-		cond = '001'
-	elif co == 'BLE':
-		cond = '010'
-	elif co == 'BNE':
-		cond = '011'
+    if co == 'BE':
+        cond = '000'
+    elif co == 'BLT':
+        cond = '001'
+    elif co == 'BLE':
+        cond = '010'
+    elif co == 'BNE':
+        cond = '011'
 
-	return '10111' + cond + d
+    return '10111' + cond + d
+
+
+
+def getLabels(src):
+    labels = {}
+    index = 0
+
+    for line in src:
+
+        if line.isspace() or line == '':
+            continue
+
+        line = line.strip()
+
+        if line.startswith('#'):
+            continue
+
+        pat = re.compile('([a-zA-Z_][a-zA_Z0-9_]*)[ \t]*:[ \t]*(.*)')
+        mat = pat.match(line)
+        if mat:
+            label = mat.group(1)
+            line = mat.group(2)
+            if label in labels:
+                print('Multiple Label Error! (Label Name : ' + label + ')')
+                sys.exit()
+
+            if line.isspace() or line == '':
+                labels[label] = index
+                continue
+            elif line.startswith('#') or line.startswith('//'):
+                labels[label] = index
+                continue
+            else:
+                labels[label] = index
+                index += 1
+                continue
+
+        index += 1
+
+
+    print(labels)
+
+    return labels
 
 
 
 def assembler(f):
-	machineCodes = []
-	num = 0
-	flag = True
+    machineCodes = []
+    num = 0
+    index = 0
+    flag = True
 
-	for line in f:
+    src = f.read().split('\n')
+    src.pop()
 
-		num += 1
+    labels = getLabels(src)
 
-		if line.isspace():
-			print(str(num) + ' : Empty Line')
-			continue
+    for line in src:
+        num += 1
+        label = ''
 
-		line = line.strip()
-	
-		if line.startswith('#'):
-			print(str(num) + ' : Comment')
-			continue
-	
+        if line.isspace() or line == '':
+            print(str(num) + ' : Empty Line')
+            continue
 
-		pat = re.compile('(ADD|SUB|AND|OR|XOR|CMP|MOV)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?[[][ \t]*?(\d+)[ \t]*?[]]')
-		mat = pat.match(line)
-		if mat:
-			print (str(num) + ' : ' + mat.group(0))
-			bit = typeADD(mat.group(1), mat.group(2), mat.group(3))
-			machineCodes.append(bit)
-			continue
+        line = line.strip()
 
-		pat = re.compile('(SLL|SLR|SRL|SRA)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
-		mat = pat.match(line)
-		if mat:
-			print (str(num) + ' : ' + mat.group(0))
-			bit = typeSLL(mat.group(1), mat.group(2), mat.group(3))
-			machineCodes.append(bit)
-			continue
+        if line.startswith('#'):
+            print(str(num) + ' : Comment')
+            continue
 
-		pat = re.compile('(LD|ST)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)\([[][ \t]*?(\d+)[ \t]*?[]]\)')
-		mat = pat.match(line)
-		if mat:
-			print (str(num) + ' : ' + mat.group(0))
-			bit = typeLD(mat.group(1), mat.group(2), mat.group(3), mat.group(4))
-			machineCodes.append(bit)
-			continue;
-
-		pat = re.compile('(LI|B|ADDI)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
-		mat = pat.match(line)
-		if mat:
-			print (str(num) + ' : ' + mat.group(0))
-			bit = typeLI(mat.group(1), mat.group(2), mat.group(3))
-			machineCodes.append(bit)
-			continue
-
-		pat = re.compile('(BE|BLT|BLE|BNE)\s+?(-??\d+)')
-		mat = pat.match(line)
-		if mat:
-			print (str(num) + ' : ' + mat.group(0))
-			bit = typeBE(mat.group(1), mat.group(2))
-			machineCodes.append(bit)
-			continue
-
-		flag = False
-		
-		break
-
-	
-	if flag:
-		print('Success Assembling!!')
-	else:
-		print(str(num) + ' : Error! (line:' + str(num) + ')')
-		machineCodes.append('Error')
+        pat = re.compile('([a-zA-Z_][a-zA_Z0-9_]*)[ \t]*:[ \t]*(.*)')
+        mat = pat.match(line)
+        if mat:
+            label = mat.group(1)
+            line = mat.group(2)
+            if line.isspace() or line == '':
+                print(str(num) + ' : ' + label + ' : Empty')
+                continue
+            elif line.startswith('#') or line.startswith('//'):
+                print(str(num) + ' : ' + label + ' : Comment')
+                continue
 
 
-	return machineCodes
+        pat = re.compile('(ADD|SUB|AND|OR|XOR|CMP|MOV)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?[[][ \t]*?(\d+)[ \t]*?[]]')
+        mat = pat.match(line)
+        if mat:
+            print(str(num) + ' : ' + mat.group(0))
+            bit = typeADD(mat.group(1), mat.group(2), mat.group(3))
+            machineCodes.append(bit)
+            index += 1
+            continue
+
+        pat = re.compile('(SLL|SLR|SRL|SRA)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
+        mat = pat.match(line)
+        if mat:
+            print(str(num) + ' : ' + mat.group(0))
+            bit = typeSLL(mat.group(1), mat.group(2), mat.group(3))
+            machineCodes.append(bit)
+            index += 1
+            continue
+
+        pat = re.compile('(LD|ST)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)\([[][ \t]*?(\d+)[ \t]*?[]]\)')
+        mat = pat.match(line)
+        if mat:
+            print(str(num) + ' : ' + mat.group(0))
+            bit = typeLD(mat.group(1), mat.group(2), mat.group(3), mat.group(4))
+            machineCodes.append(bit)
+            index += 1
+            continue;
+
+        pat = re.compile('(LI|B|ADDI)\s+?[[][ \t]*?(\d+)[ \t]*?[]]\s+?(-??\d+)')
+        mat = pat.match(line)
+        if mat:
+            print(str(num) + ' : ' + mat.group(0))
+            bit = typeLI(mat.group(1), mat.group(2), mat.group(3))
+            machineCodes.append(bit)
+            index += 1
+            continue
+
+
+        pat = re.compile('(B)\s+?([a-zA-Z_][a-zA-Z0-9_]*)')
+        mat = pat.match(line)
+        if mat and (mat.group(2) in labels):
+            print(str(num) + ' : ' + mat.group(0))
+            bit = typeLI(mat.group(1), 0, str(labels[mat.group(2)] - (index + 1)))
+            machineCodes.append(bit)
+            index += 1
+            continue
+
+
+        pat = re.compile('(BE|BLT|BLE|BNE)\s+?(-??\d+)')
+        mat = pat.match(line)
+        if mat:
+            print(str(num) + ' : ' + mat.group(0))
+            bit = typeBE(mat.group(1), mat.group(2))
+            machineCodes.append(bit)
+            index += 1
+            continue
+
+        pat = re.compile('(BE|BLT|BLE|BNE)\s+?([a-zA-Z_][a-zA-Z0-9_]*)')
+        mat = pat.match(line)
+        if mat and (mat.group(2) in labels):
+            print(str(num) + ' : ' + mat.group(0))
+            bit = typeBE(mat.group(1), str(labels[mat.group(2)] - (index + 1)))
+            machineCodes.append(bit)
+            index += 1
+            continue
+
+        flag = False
+
+        break
+
+
+    if flag:
+        print('Success Assembling!!')
+    else:
+        print(str(num) + ' : Error! (line:' + str(num) + ')')
+        machineCodes.append('Error')
+
+
+    return machineCodes
 
 
 
 def makeFile(rf, wf, width = 16, depth = 4096, start = 0):
-	memos = """-- Copyright (C) 1991-2013 Altera Corporation
+    memos = """-- Copyright (C) 1991-2013 Altera Corporation
 -- Your use of Altera Corporation's design tools, logic functions 
 -- and other software and tools, and its AMPP partner logic 
 -- functions, and any output files from any of the foregoing 
@@ -198,56 +284,56 @@ def makeFile(rf, wf, width = 16, depth = 4096, start = 0):
 -- Quartus II generated Memory Initialization File (.mif)
 
 """
-	wf.write(memos)
-	
-	wf.write('WIDTH=' + str(width) + ';\n')
-	wf.write('DEPTH=' + str(depth) + ';\n\n')
-	wf.write('ADDRESS_RADIX=UNS;\n')
-	wf.write('DATA_RADIX=BIN;\n\n')
+    wf.write(memos)
 
-	wf.write('CONTENT BEGIN\n')
-	
-	
-	if start == 1:
-		wf.write('\t0 : 0000000000000000;\n')
-	elif start > 0:
-		wf.write('\t[0..' + str(start - 1) + '] : 0000000000000000;\n')
-		
+    wf.write('WIDTH=' + str(width) + ';\n')
+    wf.write('DEPTH=' + str(depth) + ';\n\n')
+    wf.write('ADDRESS_RADIX=UNS;\n')
+    wf.write('DATA_RADIX=BIN;\n\n')
 
-	index = start
-	codes = assembler(rf)
-	
-	for code in codes:
-		wf.write('\t' + str(index) + ' : ' + code + ';\n')
-		index += 1
-	else:
-		wf.write('\t[' + str(index) + '..' + str(depth - 1) + '] : 0000000000000000;\n')
+    wf.write('CONTENT BEGIN\n')
 
-	wf.write('END;\n')
+
+    if start == 1:
+        wf.write('\t0 : 0000000000000000;\n')
+    elif start > 0:
+        wf.write('\t[0..' + str(start - 1) + '] : 0000000000000000;\n')
+
+
+    index = start
+    codes = assembler(rf)
+
+    for code in codes:
+        wf.write('\t' + str(index) + ' : ' + code + ';\n')
+        index += 1
+    else:
+        wf.write('\t[' + str(index) + '..' + str(depth - 1) + '] : 0000000000000000;\n')
+
+    wf.write('END;\n')
 
 
 
 
 if __name__ == '__main__':
-	try:
-		parser = argparse.ArgumentParser(description = 'Simple Assembler') #make cmd parser
-		parser.add_argument('READ_FILE', help = 'input from <READ_FILE>' )
-		parser.add_argument('-o', dest = 'WRITE_FILE', default = 'a.mif', help = 'output to <WRITE_FILE>')
-		parser.add_argument('-w', dest = 'WIDTH', type = int, default = 16, help = 'memory\'s one word width')
-		parser.add_argument('-d', dest = 'DEPTH', type = int, default = 4096, help = 'memory\'s word number')
-		parser.add_argument('-s', dest = 'START', type = int, default = 0, help = 'position of initial instruction in memory')
-		args = parser.parse_args()
-		
-		rf = open(args.READ_FILE, 'r')
-		wf = open(args.WRITE_FILE, 'w')
-	except IndexError:
-		print('Invalid comand line argument\n')
-	except IOError:
-		print('Designated file cannot be opened\n')
-	else:
-		makeFile(rf, wf, args.WIDTH, args.DEPTH, args.START)
-		rf.close()
-		wf.close()
-	finally:
-		quit()
+    try:
+        parser = argparse.ArgumentParser(description = 'Simple Assembler') #make cmd parser
+        parser.add_argument('READ_FILE', help = 'input from <READ_FILE>' )
+        parser.add_argument('-o', dest = 'WRITE_FILE', default = 'a.mif', help = 'output to <WRITE_FILE>')
+        parser.add_argument('-w', dest = 'WIDTH', type = int, default = 16, help = 'memory\'s one word width')
+        parser.add_argument('-d', dest = 'DEPTH', type = int, default = 4096, help = 'memory\'s word number')
+        parser.add_argument('-s', dest = 'START', type = int, default = 0, help = 'position of initial instruction in memory')
+        args = parser.parse_args()
+
+        rf = open(args.READ_FILE, 'r')
+        wf = open(args.WRITE_FILE, 'w')
+    except IndexError:
+        print('Invalid comand line argument\n')
+    except IOError:
+        print('Designated file cannot be opened\n')
+    else:
+        makeFile(rf, wf, args.WIDTH, args.DEPTH, args.START)
+        rf.close()
+        wf.close()
+    finally:
+        quit()
 
