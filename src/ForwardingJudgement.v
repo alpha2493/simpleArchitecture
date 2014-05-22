@@ -7,7 +7,7 @@ module ForwardingJudgment(
 			  input [2:0] twobeforeop2,twobeforecond,twobeforeop3,
                           output      one_A, one_B, two_A, two_B);
    
-   reg 				       oA, oB, tA, tB;
+   reg 				      oA, oB, tA, tB;
    
    //one_A
    always @ (op1 or op2 or cond or op3 or beforeop1 or beforeop2 or beforecond or beforeop3) begin
@@ -16,15 +16,15 @@ module ForwardingJudgment(
             && beforeop3 <= 4'b1100
 	    && beforeop3 != 4'b0101
 	    && beforeop3 != 0111)
-           || (beforeop1 == 2'b10 && beforeop2 == 3'b001))
+           || (beforeop1 == 2'b10 && (beforeop2 == 3'b001 || beforeop2 == 3'b000)))
           && ((op1 == 2'b11 && ((op3 >= 4'b0000
                                  && op3 <= 4'b0110)
                                 || op3 == 4'b1101))
               || (op1 == 2'b01))
 	  && op2 == beforecond)
-         oA <= 1'b1;
+        oA <= 1'b1;
       else
-         oA <= 1'b0;
+        oA <= 1'b0;
    end
 
    //two_A
@@ -34,15 +34,15 @@ module ForwardingJudgment(
 	    && twobeforeop3 <= 4'b1100
 	    && twobeforeop3 != 4'b0101
 	    && twobeforeop3 != 0111)
-           || (twobeforeop1 == 2'b10 && twobeforeop2 == 3'b001))
+           || (twobeforeop1 == 2'b10 && (twobeforeop2 == 3'b001 || twobeforeop2 == 3'b000)))
           && ((op1 == 2'b11 && ((op3 >= 4'b0000
                                  && op3 <= 4'b0110)
                                 || op3 == 4'b1101))
               || (op1 == 2'b01))
 	  && op2 == twobeforecond)
-         tA <= 1'b1;
+        tA <= 1'b1;
       else
-         tA <= 1'b0;
+        tA <= 1'b0;
    end
 
    //one_B
@@ -52,7 +52,7 @@ module ForwardingJudgment(
 	    && beforeop3 <= 4'b1100
 	    && beforeop3 != 4'b0101
 	    && beforeop3 != 0111)
-           || (beforeop1 == 2'b10 && beforeop2 == 3'b001))
+           || (beforeop1 == 2'b10 && (beforeop2 == 3'b001 || beforeop2 == 3'b000)))
           && ((op1 == 2'b11 && ((op3 >= 4'b0000
                                  && op3 <= 4'b0101)
                                 || (op3 >= 4'b1000
@@ -63,9 +63,9 @@ module ForwardingJudgment(
                                    || op2 == 3'b010
                                    || op2 == 3'b110)))
 	  && cond == beforecond)
-         oB <= 1'b1;
+        oB <= 1'b1;
       else
-         oB <= 1'b0;
+        oB <= 1'b0;
    end
 
    //two_B
@@ -75,7 +75,7 @@ module ForwardingJudgment(
 	    && twobeforeop3 <= 4'b1100
 	    && twobeforeop3 != 4'b0101
 	    && twobeforeop3 != 0111)
-           || (twobeforeop1 == 2'b10 && twobeforeop2 == 3'b001))
+           || (twobeforeop1 == 2'b10 && (twobeforeop2 == 3'b001 || twobeforeop2 == 3'b000)))
           && ((op1 == 2'b11 && ((op3 >= 4'b0000
 	                         && op3 <= 4'b0101)
                                 || (op3 >= 4'b1000
@@ -86,9 +86,9 @@ module ForwardingJudgment(
 	                           || op2 == 3'b010
 				   || op2 == 3'b110)))
 	  && cond == twobeforecond)
-         tB <= 1'b1;
+        tB <= 1'b1;
       else
-         tB <= 1'b0;
+        tB <= 1'b0;
    end
    assign one_A = oA;
    assign one_B = oB;
