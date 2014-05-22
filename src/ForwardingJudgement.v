@@ -1,10 +1,13 @@
 module ForwardingJudgment(
-			  input [1:0] op1,
-			  input [2:0] op2,cond,op3,
-			  input [1:0] beforeop1,
-			  input [2:0] beforeop2,beforecond,beforeop3,
 			  input [1:0] twobeforeop1,
-			  input [2:0] twobeforeop2,twobeforecond,twobeforeop3,
+			  input [2:0] twobeforeop2,twobeforecond,
+			  input [3:0] twobeforeop3,
+			  input [1:0] beforeop1,
+			  input [2:0] beforeop2,beforecond,
+			  input [3:0] beforeop3,
+			  input [1:0] op1,
+			  input [2:0] op2,cond,
+			  input [3:0] op3,
                           output      one_A, one_B, two_A, two_B);
    
    reg 				      oA, oB, tA, tB;
@@ -15,7 +18,7 @@ module ForwardingJudgment(
       	    && beforeop3 >= 4'b0000
             && beforeop3 <= 4'b1100
 	    && beforeop3 != 4'b0101
-	    && beforeop3 != 0111)
+	    && beforeop3 != 4'b0111)
            || (beforeop1 == 2'b10 && (beforeop2 == 3'b001 || beforeop2 == 3'b000)))
           && ((op1 == 2'b11 && ((op3 >= 4'b0000
                                  && op3 <= 4'b0110)
@@ -33,7 +36,7 @@ module ForwardingJudgment(
             && twobeforeop3 >= 4'b0000
 	    && twobeforeop3 <= 4'b1100
 	    && twobeforeop3 != 4'b0101
-	    && twobeforeop3 != 0111)
+	    && twobeforeop3 != 4'b0111)
            || (twobeforeop1 == 2'b10 && (twobeforeop2 == 3'b001 || twobeforeop2 == 3'b000)))
           && ((op1 == 2'b11 && ((op3 >= 4'b0000
                                  && op3 <= 4'b0110)
@@ -51,7 +54,7 @@ module ForwardingJudgment(
             && beforeop3 >= 4'b0000
 	    && beforeop3 <= 4'b1100
 	    && beforeop3 != 4'b0101
-	    && beforeop3 != 0111)
+	    && beforeop3 != 4'b0111)
            || (beforeop1 == 2'b10 && (beforeop2 == 3'b001 || beforeop2 == 3'b000)))
           && ((op1 == 2'b11 && ((op3 >= 4'b0000
                                  && op3 <= 4'b0101)
@@ -74,7 +77,7 @@ module ForwardingJudgment(
             && twobeforeop3 >= 4'b0000
 	    && twobeforeop3 <= 4'b1100
 	    && twobeforeop3 != 4'b0101
-	    && twobeforeop3 != 0111)
+	    && twobeforeop3 != 4'b0111)
            || (twobeforeop1 == 2'b10 && (twobeforeop2 == 3'b001 || twobeforeop2 == 3'b000)))
           && ((op1 == 2'b11 && ((op3 >= 4'b0000
 	                         && op3 <= 4'b0101)

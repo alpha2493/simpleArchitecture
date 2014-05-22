@@ -1,5 +1,5 @@
 module DecodeUnit(
-   input [15:0] TwoBeforeCOMMAND, BeforeCOMMAND, COMMAND,
+   input [15:0] COMMAND,
    output       out,
    output 	INPUT_MUX, writeEnable,
    output [2:0] writeAddress,
