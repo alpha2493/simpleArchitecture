@@ -1,4 +1,4 @@
-module BusExtractor(input [15:0] in,
+module OpExtractor(input [15:0] in,
 		    output [1:0] op1,
 		    output [2:0] op2,
 		    output [2:0] cond,
