@@ -9,4 +9,6 @@ label3: ADD [0] [1]
 BE label2
 ADD [0] [1]
 label2:
+NOP
+HLT
 
