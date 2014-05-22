@@ -1,5 +1,5 @@
 module DecodeUnitRegisterOne(
-   input 	CLK, One_A_IN, One_B_IN, Two_A_IN, Two_B_IN,
+   input 	CLK, One_A_IN, One_B_IN, Two_A_IN, Two_B_IN, MW_One_IN, MW_Two_IN,
    input 	input_IN, wren_IN,
    input [2:0] 	writeAd_IN,
    input 	ADR_MUX_IN, write_IN, PC_load_IN,
@@ -8,7 +8,7 @@ module DecodeUnitRegisterOne(
    input 	SW_IN, MAD_MUX_IN, FLAG_WRITE_IN, AR_IN, BR_IN,
    input [3:0] 	ALU_IN,
    input 	SPC_MUX_IN, MX_MUX_IN, AB_MUX_IN,
-   output       One_A_OUT, One_B_OUT, Two_A_OUT, Two_B_OUT,
+   output       One_A_OUT, One_B_OUT, Two_A_OUT, Two_B_OUT, MW_One_OUT, MW_Two_OUT,
    output 	input_OUT, wren_OUT,
    output [2:0] writeAd_OUT,
    output 	ADR_MUX_OUT, write_OUT, PC_load_OUT,
