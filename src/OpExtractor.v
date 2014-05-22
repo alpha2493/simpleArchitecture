@@ -1,5 +1,5 @@
 module BusExtractor(input [15:0] in,
-		    output [1:0] op3,
+		    output [1:0] op1,
 		    output [2:0] op2,
 		    output [2:0] cond,
 		    output [3:0] op3);
