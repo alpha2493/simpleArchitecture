@@ -79,7 +79,7 @@ module DecodeUnit(
 
    //inc
    always @ (COMMAND) begin
-      if (COMMAND[15:11] == 5'b10010)
+      if (COMMAND[15:8] == 8'b10111110 || COMMAND[15:11] == 5'b10010)
 	i <= 1;
       else
 	i <= 0;
@@ -87,7 +87,7 @@ module DecodeUnit(
 
    //dec
    always @ (COMMAND) begin
-      if (COMMAND[15:8] == 8'b10111111)
+      if (COMMAND[15:8] == 8'b10111111 || COMMAND[15:11] == 5'b10011)
 	d <= 1;
       else
 	d <= 0;
@@ -147,9 +147,10 @@ module DecodeUnit(
    //write
    always @ (COMMAND) begin
       if ((COMMAND[15:14] == 2'b11 && (COMMAND[7:4] <= 4'b1100 && COMMAND[7:4] != 4'b0101)) ||
-	  COMMAND[15:14] == 2'b00 ||
-	  COMMAND[15:12] == 4'b1000 ||
-	  COMMAND[15:11] == 5'b10101)
+	  COMMAND[15:14] == 2'b00 ||    //LD
+	  COMMAND[15:12] == 4'b1000 ||  //LI, ADDI
+	  COMMAND[15:11] == 5'b10011 || //POP
+	  COMMAND[15:11] == 5'b10101)   //GET
 	wr <= 1;
       else
 	wr <=0;
